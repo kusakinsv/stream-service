@@ -2,10 +2,10 @@
 
 ### Стриминговый сервис
 
-БД: PostgreSQL
-jdbc:postgresql://localhost:5400/streamservice  
-admin  
-123450000
+#### для запуска:
+Kafka, бд - готовый образ в .docker
 
+#### После запуска
+http://localhost:8080 в браузере  
 Логин / пароль: admin / admin
 

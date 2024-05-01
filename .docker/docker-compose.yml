@@ -50,3 +50,14 @@ services:
     restart: "no"
     networks:
       - mynet
+
+  postgres:
+    network_mode: bridge
+    image: postgres
+    environment:
+      POSTGRES_DB: "streamservice"
+      POSTGRES_USER: "admin"
+      POSTGRES_PASSWORD: "123450000"
+    ports:
+      - "5400:5432"
+    restart: "no"
