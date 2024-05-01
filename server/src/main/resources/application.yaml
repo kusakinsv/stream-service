@@ -1,0 +1,27 @@
+server:
+  port: 8001
+
+spring:
+  kafka:
+    bootstrap-servers: PLAINTEXT://localhost:9092,PLAINTEXT://localhost:29092
+    reply-topic: client
+    request-topic: server
+    consumer:
+      client-id: server
+      bootstrap-servers: ${spring.kafka.bootstrap-servers}
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5400/streamservice
+    username: admin
+    password: 123450000
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: none
+#      search:
+#        default:
+#          directory_provider: filesystem
+#          indexBase: "/lucene/indexes"
+  flyway:
+    schemas: public
+    enabled: true

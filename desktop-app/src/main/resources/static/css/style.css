@@ -1,0 +1,14 @@
+h2.bigtitle {
+    color: #376aff;
+}
+
+.bcg {
+    background-color: #ffffff;
+}
+
+td.trackname {
+    width: 500px;
+    column-width: 500px;
+    border: 5px;
+
+}

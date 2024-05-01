@@ -1,0 +1,10 @@
+server:
+  port: 7121
+  launch-browser-on-start: true
+  startpage: http://localhost:7121/index
+
+spring:
+  mvc:
+    view:
+      prefix: classpath:templates/
+      suffix: .html
