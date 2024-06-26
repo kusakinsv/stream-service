@@ -1,5 +1,10 @@
-h2.bigtitle {
+button {
+    cursor: pointer;
+}
+
+.bigtitle {
     color: #376aff;
+    font-size: 30px;
 }
 
 .bcg {
@@ -10,5 +15,47 @@ td.trackname {
     width: 500px;
     column-width: 500px;
     border: 5px;
+
+}
+
+.list-btn {
+margin-top: 16px;
+
+}
+
+.text {
+    display: inline-block;
+    transform: rotate(-45deg);
+}
+
+
+button {
+font-size: 14px;
+font-family: Arial, Helvetica, sans-serif
+}
+
+button.btn {
+    color: #ffffff;
+    background-color: #4770FF;
+    border: solid 1px rgb(255, 255, 255);
+    width: 80px;
+    height: 30px;
+    border-radius: 4px;
+    font-weight: 400;
+
+}
+
+button.btn:hover {
+    color: #ffffff;
+    background-color: #496bf3;
+    border: solid 1px rgb(255, 255, 255);
+    width: 80px;
+    height: 30px;
+    border-radius: 4px;
+    font-weight: 500;
+}
+
+audio {
+    height: 30px;
 
 }

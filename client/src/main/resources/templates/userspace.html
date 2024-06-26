@@ -1,43 +1,73 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="../static/css/style.css" th:href="@{/css/style.css}" rel="stylesheet"/>
+    <link href="../static/css/style.css" th:href="@{/css/style.css}" rel="stylesheet" />
+    <link href="../static/css/grids.css" th:href="@{/css/grids.css}" rel="stylesheet" />
     <title>Stream service</title>
 </head>
+
 <body class="bcg">
+    <div class="header">
+        <div class="container">
 
-<div class="bcg">
-    <h2 class="bigtitle">Stream service</h2>
-    <div class="container">
-        <form action="/auth/logout" method="POST">
-            <button type="submit">Logout</button>
-        </form>
+            <div class="row">
+                <h2 class="bigtitle col-12">Stream service</h2>
+            </div>
+
+            <div class="row">
+                <div class="col-12 row">
+                    <div th:text="'user: ' + ${currentUser}">user: current_user</div>
+                    <div class="form">
+                        <form action="/auth/logout" method="POST">
+                            <button class="btn logout-btn" type="submit">Logout</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div name="row-3" class="row">
+                <div class="col-12">
+                    <a href="/search">Поиск музыки</a>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-12">
+                    <table>
+                        <tr class="itemlist" th:each="position:${positions}">
+                            <td th:text="${position.getPosition}+'.'">1.</td>
+                            <td class="trackname" th:text="${position.getTitle()}">TRACK_TITLE</td>
+                            <td>
+                                <audio class="audio" controls>
+                                    <source th:src="${position.getUrl()}" src="">
+                                    Тег audio не поддерживается вашим браузером. <a
+                                        th:href="${position.getUrl()}">Download</a>
+                                </audio>
+                            </td>
+                            <td>
+                                <form th:method="get" method="get"
+                                    th:action="@{playlist/renamePage/{playlistId}/{position}/(playlistId=${playlist.getId()}, position=${position.getPosition()})}">
+                                    <button type="submit" class="btn rename-btn list-btn">RENAME</button>
+                                    <!--                    <button type="submit" name="go-to-rename-page" value="value1" class="link-button">RENAME</button>-->
+                                </form>
+                            </td>
+                            <td>
+                                <form th:method="get" method="get"
+                                    th:action="@{playlist/deleteFromLibrary/{trackNumber}(trackNumber=${position.getPosition()})}">
+                                    <button class="btn delete-btn list-btn" type="submit" name="delete-from-lib"
+                                        value="value2">DELETE</button>
+                                </form>
+                            </td>
+                            <!--            <td><a href="#" th:href="${position.getUrl()}" th:download="${position.getUrl()}">DOWNLOAD</a></td>-->
+
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
     </div>
-    <h4 th:text="'user: ' + ${currentUser}">user: current_user</h4>
-    <a href="/search">Поиск музыки</a>
-    <table>
-        <tr class="itemlist" th:each="position:${positions}">
-            <td th:text="${position.getPosition}+'.'">1.</td>
-            <td class="trackname" th:text="${position.getTitle()}">TRACK_TITLE</td>
-            <td>
-                <audio controls>
-                    <source th:src="${position.getUrl()}" src="">
-                    Тег audio не поддерживается вашим браузером. <a th:href="${position.getUrl()}">Download</a>
-                </audio>
-            </td>
-            <td>
-                <form th:method="get" method="get"
-                      th:action="@{playlist/deleteFromLibrary/{trackNumber}(trackNumber=${position.getPosition()})}">
-                    <button type="submit" name="submit" value="value" class="link-button">DELETE</button>
-                </form>
-                <!--                <a th:href="@{playlist/deleteFromLibrary/{trackNumber}(trackNumber=${position.getPosition()})}">Delete</a>-->
-                <!--                <form th:object="${commandObject}" th:action="@{/urlToCall}" th:method="delete"/>-->
-            </td>
-            <!--            <td><a href="#" th:href="${position.getUrl()}" th:download="${position.getUrl()}">DOWNLOAD</a></td>-->
-        </tr>
-    </table>
-</div>
-
 </body>
+
 </html>
