@@ -50,4 +50,16 @@ public class ClientMusicService {
         clientTransportService.sendMessage(requestMessage);
     }
 
+    public void renamePositionInPlaylist(String username, Long playlistId, int postionNumber, String newTrackName) {
+        Message requestMessage = new Message();
+        requestMessage.setHeader(MessageHeader.MESSAGE_TYPE.name(), MessageType.MUSIC_RENAME_TRACK_FROM_PLAYLIST.name());
+        requestMessage.setPayload(new HashMap<String, Object>() {{
+            put("username", username);
+            put("playlistId", playlistId);
+            put("position", postionNumber);
+            put("newTrackName", newTrackName);
+        }});
+        clientTransportService.sendMessage(requestMessage);
+    }
+
 }

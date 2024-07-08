@@ -10,6 +10,8 @@ import ru.one.stream.server.entities.Playlist;
 import ru.one.stream.server.entities.PlaylistPosition;
 import ru.one.stream.server.repositories.*;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -103,9 +105,29 @@ public class ServerMusicService {
 
     private List<PlaylistPosition> reOrderPositions(List<PlaylistPosition> positions) {
         for (int i = 0; i < positions.size(); i++) {
-            positions.get(i).setPosition(i+1);
+            positions.get(i).setPosition(i + 1);
         }
         return playlistPositionRepository.saveAll(positions);
+    }
+
+    public void renameMusicTrack(String username,
+                                 Long playlistId,
+                                 int positionNumber,
+                                 @NotBlank @NotNull String newPositionTitle) {
+        var position = playlistPositionRepository
+                .findPlaylistPositionByUsernameAndPlaylistIdAndPostitionNumber(username, playlistId, positionNumber)
+                .orElseThrow(() -> new RuntimeException("Can't find position with this parameters"));
+        position.setTitle(newPositionTitle);
+        var savedPosition = playlistPositionRepository.save(position);
+        //todo сделать проверку на осмысленные слова, чтоб вперемешку букв не было, и знаков
+        if (newPositionTitle.length() >= 10 && newPositionTitle.length() <= 50 ) addNewTitleAsPattern(savedPosition, newPositionTitle);
+    }
+
+    void addNewTitleAsPattern(PlaylistPosition playlistPosition, String newPositionsTitle) {
+        var track = playlistPosition.getTrack();
+        var pattern = new Pattern(newPositionsTitle);
+        track.getPatterns().add(pattern);
+        musicTrackRepository.save(track);
     }
 
 

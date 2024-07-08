@@ -11,6 +11,7 @@ public class DesckopApp {
     public static void main(String[] args) {
         ApplicationContext context = SpringApplication.run(DesckopApp.class, args);
         BrowserLauncher launcher = context.getBean(BrowserLauncher.class);
+
         launcher.start();
     }
 }

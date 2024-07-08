@@ -3,15 +3,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="../static/css/style.css" th:href="@{/css/style.css}" rel="stylesheet"/>
+    <link href="../static/css/grids.css" th:href="@{/css/grids.css}" rel="stylesheet"/>
+
     <title>Stream service</title>
 </head>
 <body class="bcg">
 
 <div class="bcg">
     <h2 class="bigtitle">Stream service</h2>
-    <div class="container">
+    <div class="form">
         <form action="/auth/logout" method="POST">
-            <button type="submit">Logout</button>
+            <button class="btn" type="submit">Logout</button>
         </form>
     </div>
     <h4 th:text="'user: ' + ${currentUser}">user: current_user</h4>
@@ -39,7 +41,7 @@
                 <td th:text="${trackList.indexOf(musicTrack)+1}"></td>
                 <td class="trackname" th:text="${musicTrack.getName()}"></td>
                 <td>
-                    <audio controls>
+                    <audio class="audio" controls>
                         <source th:src="${musicTrack.getUrl()}" src="">
                         Тег audio не поддерживается вашим браузером. <a th:href="${musicTrack.getUrl()}">Скачайте музыку</a>
                     </audio>
@@ -48,7 +50,7 @@
 <!--                    <a method="GET" th:href="@{playlist/addToLibrary/{trackNumber}(trackNumber=${trackList.indexOf(musicTrack)})}">ADD</a>-->
 <!--                    <form method="POST" th:action="@{playlist/addToLibrary/{trackNumber}(trackNumber=${trackList.indexOf(musicTrack)})}">-->
                     <form method="POST" th:action="@{playlist/addToLibrary/{trackNumber}(trackNumber=${trackList.indexOf(musicTrack)})}">
-                        <button type="submit" name="submit" value="value" class="link-button">ADD</button>
+                        <button class="btn list-btn" type="submit" name="submit" value="value">ADD</button>
                     </form>
                 </td>
 <!--                <td><a href="#" th:href="${musicTrack.getUrl()}" th:download="${musicTrack.getUrl()}">ADD</a></td>-->

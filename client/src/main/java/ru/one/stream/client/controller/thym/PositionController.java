@@ -6,57 +6,40 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import ru.one.stream.commons.models.MusicTrackDto;
+import ru.one.stream.client.models.ThymData;
 import ru.one.stream.client.service.ClientMusicService;
 import ru.one.stream.client.utils.UserDataHolder;
+import ru.one.stream.commons.models.MusicTrackDto;
 
 import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/playlist")
-public class PlaylistController {
+@RequestMapping("/position")
+public class PositionController {
 
     private final ClientMusicService clientMusicService;
     private final UserDataHolder userDataHolder;
 
-    @GetMapping("/")
-    private String loadWorkspace(Model model, @AuthenticationPrincipal User user) {
-        model.addAttribute("currentUser", user.getUsername());
-        return "userspace";
-    }
+    @RequestMapping(value = "/rename/{newTrackName}", method = RequestMethod.POST)
+//    @RequestMapping(value = "/rename", method = RequestMethod.POST)
+    public String renamePositionFromPlaylist(Model model,
+                                             @AuthenticationPrincipal User user,
+                                             @ModelAttribute("thymData") ThymData thymData,
+                                             @PathVariable String newTrackName) {
 
-    @PostMapping("/addToLibrary/{trackNumber}")
-    public String addMusicTrackToLibrary(Model model,
-                                         @AuthenticationPrincipal User user,
-                                         @PathVariable int trackNumber) {
-        List<MusicTrackDto> trackList = (List<MusicTrackDto>) userDataHolder.getDataMap().get("trackList");
-        MusicTrackDto currentDto = trackList.get(trackNumber);
-        model.addAttribute("currentUser", user.getUsername());
-        model.addAttribute("trackList", trackList);
-        MusicTrackDto dublicate = currentDto.createDublicate();
-        dublicate.setName((String) userDataHolder.getDataMap().get("trackName"));
-        clientMusicService.addMusicTrackToUserLibrary(dublicate, user.getUsername());
-        return "redirect:/search";
-    }
-
-    @GetMapping("/deleteFromLibrary/{trackNumber}")
-    public String deleteMusicTrackFromLibrary(Model model,
-                                              @AuthenticationPrincipal User user,
-                                              @PathVariable int trackNumber) {
-        clientMusicService.deleteMusicTrackFromUserLibrary(user.getUsername(), trackNumber);
+        System.out.println(thymData.getValue1());
+//        clientMusicService.renamePositionInPlaylist(
+//                user.getUsername(),
+//                (Long) userDataHolder.getDataMap().get("playlistId"),
+//                (int) userDataHolder.getDataMap().get("trackNumber"),
+//                thymData.getValue1());
+//        userDataHolder.getDataMap().remove("playlistId");
+//        userDataHolder.getDataMap().remove("trackNumber");
         return "redirect:/userspace";
     }
 
-    @GetMapping("/rename/{playlistId}/{trackNumber}/{newTrackName}")
-    public String renameMusicTrackFromPlaylist(Model model,
-                                              @AuthenticationPrincipal User user,
-                                              @PathVariable Long playlistId,
-                                              @PathVariable int trackNumber,
-                                              @PathVariable String newTrackName) {
-        clientMusicService.deleteMusicTrackFromUserLibrary(user.getUsername(), trackNumber);
-        return "redirect:/userspace";
-    }
+
 
 
 //    @PostMapping("/addToPlaylist/{trackNumber}/{playlistId}")

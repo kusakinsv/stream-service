@@ -3,22 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="../static/css/style.css" th:href="@{/css/style.css}" rel="stylesheet" />
+    <link href="../static/css/font-awesome.min.css" th:href="@{/css/font-awesome.min.css}" rel="stylesheet" />
     <link href="../static/css/grids.css" th:href="@{/css/grids.css}" rel="stylesheet" />
+    <link href="../static/css/style.css" th:href="@{/css/style.css}" rel="stylesheet" />
     <title>Stream service</title>
 </head>
 
 <body class="bcg">
     <div class="header">
         <div class="container">
-
             <div class="row">
-                <h2 class="bigtitle col-12">Stream service</h2>
+                <h1 class="big-title col-12">Stream service</h1>
             </div>
 
-            <div class="row">
+            <div name="row-2" class="row">
                 <div class="col-12 row">
-                    <div th:text="'user: ' + ${currentUser}">user: current_user</div>
+                    <div>User:</div>
+                    <div th:text="${currentUser}">current_user</div>
                     <div class="form">
                         <form action="/auth/logout" method="POST">
                             <button class="btn logout-btn" type="submit">Logout</button>
@@ -27,16 +28,16 @@
                 </div>
             </div>
 
-            <div name="row-3" class="row">
-                <div class="col-12">
+            <div class="row row2">
+                <div class="col-12 mediumpadding">
                     <a href="/search">Поиск музыки</a>
                 </div>
             </div>
 
             <div class="row">
-                <div class="col-12">
-                    <table>
-                        <tr class="itemlist" th:each="position:${positions}">
+                <!-- <div class="col-7 col-md-12 col-sm-12"> -->
+                    <table class="music-list__container">
+                        <tr class="itemlist col-7 col-md-12 col-sm-12" th:each="position:${positions}">
                             <td th:text="${position.getPosition}+'.'">1.</td>
                             <td class="trackname" th:text="${position.getTitle()}">TRACK_TITLE</td>
                             <td>
@@ -49,22 +50,24 @@
                             <td>
                                 <form th:method="get" method="get"
                                     th:action="@{playlist/renamePage/{playlistId}/{position}/(playlistId=${playlist.getId()}, position=${position.getPosition()})}">
-                                    <button type="submit" class="btn rename-btn list-btn">RENAME</button>
-                                    <!--                    <button type="submit" name="go-to-rename-page" value="value1" class="link-button">RENAME</button>-->
+                                    <button class="btn-mini btn-rename list-btn" type="submit">
+                                        <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                    </button>
                                 </form>
                             </td>
                             <td>
                                 <form th:method="get" method="get"
                                     th:action="@{playlist/deleteFromLibrary/{trackNumber}(trackNumber=${position.getPosition()})}">
-                                    <button class="btn delete-btn list-btn" type="submit" name="delete-from-lib"
-                                        value="value2">DELETE</button>
+                                    <button class="btn-mini btn-delete list-btn" type="submit">
+                                        <i class="fa fa-times" aria-hidden="true"></i>
+                                    </button>
                                 </form>
                             </td>
                             <!--            <td><a href="#" th:href="${position.getUrl()}" th:download="${position.getUrl()}">DOWNLOAD</a></td>-->
 
                         </tr>
                     </table>
-                </div>
+                <!-- </div> -->
             </div>
         </div>
     </div>

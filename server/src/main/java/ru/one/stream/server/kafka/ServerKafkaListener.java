@@ -70,6 +70,15 @@ public class ServerKafkaListener implements ServerTransportService {
             serverMusicService.deleteMusicTrackFromLibrary(username, positionNumber);
             payload = "success";
         }
+        else if (message.getHeaders().get(MessageHeader.MESSAGE_TYPE.name()).equals(MessageType.MUSIC_RENAME_TRACK_FROM_PLAYLIST.name())) {
+            HashMap<String, Object> payloadBody = (HashMap<String, Object>) message.getPayload();
+            int positionNumber = (int) payloadBody.get("position");
+            String username = (String) payloadBody.get("username");
+            Long playlistId = (Long) payloadBody.get("playlistId");
+            String newTrackName = (String) payloadBody.get("newTrackName");
+            serverMusicService.renameMusicTrack(username, playlistId, positionNumber, newTrackName);
+            payload = "success";
+        }
         return new Message(uuid, payload);
     }
 

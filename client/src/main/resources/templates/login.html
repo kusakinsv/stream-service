@@ -1,24 +1,48 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
-<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
-    <link href="../static/css/style.css" th:href="@{/css/style.css}" rel="stylesheet"/>
+    <!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+    <link href="../static/css/grids.css" th:href="@{/css/grids.css}" rel="stylesheet" />
+    <link href="../static/css/style.css" th:href="@{/css/style.css}" rel="stylesheet" />
+
     <title>Stream service</title>
 </head>
+
 <body>
-<h2 class="bigtitle">Stream Service</h2>
-<div class="container">
-    <form class="form-signin" method="post" action="/auth/login">
-        <h3 class="form-signin-heading">Please sign in</h3>
-        <p>
-            <label for="username" class="sr-only">Username</label>
-            <input type="text" id="username" name="username" class="form-control" placeholder="Username" required autofocus>
-        </p>
-        <p>
-            <label for="password" class="sr-only">Password</label>
-            <input type="password" id="password" name="password" class="form-control" placeholder="Password" required>
-        </p>
-        <button class="btn btn-lg btn-primary btn-block"  type="submit">Sign in</button>
-    </form>
-</div>
-</body></html>
+    <div class="header">
+        <div class="container">
+            <div class="row">
+                <h1 class="big-title col-12">Stream Service</h1>
+            </div>
+
+            <div class="row login-box__row">
+                <div class="login-box">
+                    <div class="login-box__title">Please sign in</div>
+                    <form class="form-signin" method="post" action="/auth/login">
+                        <div class="loginbox__row">
+                            <div class="login-box__item login-box_text">
+                                <label for="username" class="sr-only">Username:</label>
+                            </div>
+                            <div class="login-box__item login-box_field"><input type="text" id="username" name="username" class="form-control" placeholder="Username"
+                                required autofocus></div>
+                        </div>
+                        <div class="loginbox__row">
+                            <div class="login-box__item login-box_text"><label for="password" class="sr-only">Password:</label></div>
+                            <div class="login-box__item login-box_field"><input type="password" id="password" name="password" class="form-control"
+                                placeholder="Password" required></div>
+                        </div>
+                        <div class="loginbox__row">
+                            <button class="btn btn__sign-in" type="submit">Sign in</button></div>
+                        
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+
+
+</body>
+
+</html>

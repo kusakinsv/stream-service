@@ -1,2 +1,4 @@
-package ru.one.stream.server.service;public class RoutingService {
+package ru.one.stream.server.service;
+
+public class RoutingService {
 }

@@ -6,6 +6,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import ru.one.stream.client.models.ThymData;
 import ru.one.stream.commons.models.MusicTrackDto;
 import ru.one.stream.client.service.ClientMusicService;
 import ru.one.stream.client.utils.UserDataHolder;
@@ -27,7 +28,9 @@ public class PlaylistController {
     }
 
     @PostMapping("/addToLibrary/{trackNumber}")
-    public String addMusicTrackToLibrary(Model model, @AuthenticationPrincipal User user, @PathVariable int trackNumber) {
+    public String addMusicTrackToLibrary(Model model,
+                                         @AuthenticationPrincipal User user,
+                                         @PathVariable int trackNumber) {
         List<MusicTrackDto> trackList = (List<MusicTrackDto>) userDataHolder.getDataMap().get("trackList");
         MusicTrackDto currentDto = trackList.get(trackNumber);
         model.addAttribute("currentUser", user.getUsername());
@@ -39,9 +42,23 @@ public class PlaylistController {
     }
 
     @GetMapping("/deleteFromLibrary/{trackNumber}")
-    public String deleteMusicTrackFromLibrary(Model model, @AuthenticationPrincipal User user, @PathVariable int trackNumber) {
+    public String deleteMusicTrackFromLibrary(Model model,
+                                              @AuthenticationPrincipal User user,
+                                              @PathVariable int trackNumber) {
         clientMusicService.deleteMusicTrackFromUserLibrary(user.getUsername(), trackNumber);
         return "redirect:/userspace";
+    }
+
+    @GetMapping("/renamePage/{playlistId}/{trackNumber}")
+    public String renameMusicTrackFromPlaylist(Model model,
+                                               @AuthenticationPrincipal User user,
+                                               @PathVariable Long playlistId,
+                                               @PathVariable int trackNumber) {
+        userDataHolder.getDataMap().put("playlistId", playlistId);
+        userDataHolder.getDataMap().put("trackNumber", trackNumber);
+        model.addAttribute("thymData", new ThymData());
+        model.addAttribute("username", user.getUsername());
+        return "rename";
     }
 
 

@@ -22,7 +22,7 @@ public class PlaylistPosition {
 
     private String title;
 
-    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
     @JoinColumn(name = "music_track_id")
     private MusicTrack track;
 
