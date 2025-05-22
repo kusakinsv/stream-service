@@ -15,26 +15,13 @@
     <name>stream-service</name>
     <description>Stream Service</description>
     <modules>
-        <module>client</module>
         <module>server</module>
         <module>desktop-app</module>
-        <module>commons</module>
     </modules>
     <properties>
         <java.version>11</java.version>
         <spring.boot.version>2.5.1</spring.boot.version>
     </properties>
-
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>org.springframework.kafka</groupId>
-                <artifactId>spring-kafka</artifactId>
-                <version>2.7.6</version>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
-
 
             <dependencies>
                 <dependency>

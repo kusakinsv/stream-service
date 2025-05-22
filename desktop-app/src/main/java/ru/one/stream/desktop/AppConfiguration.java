@@ -4,8 +4,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
-import ru.one.stream.client.service.SearchEnginesService;
-import ru.one.stream.client.service.SearchService;
+import ru.one.stream.server.service.SearchEnginesService;
+import ru.one.stream.server.service.SearchService;
 
 @Configuration
 @PropertySource("classpath:application.yaml")

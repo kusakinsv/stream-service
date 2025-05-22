@@ -1,5 +1,8 @@
 package ru.one.stream.server.enums;
 
+import lombok.Getter;
+
+@Getter
 public enum Role {
     USER("USER"),
     ADMIN("ADMIN");

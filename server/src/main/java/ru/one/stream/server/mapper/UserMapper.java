@@ -2,8 +2,8 @@ package ru.one.stream.server.mapper;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import ru.one.stream.commons.models.UserDetailsDto;
-import ru.one.stream.commons.models.userspace.UserspaceDto;
+import ru.one.stream.server.models.UserDetailsDto;
+import ru.one.stream.server.models.userspace.UserspaceDto;
 import ru.one.stream.server.entities.User;
 import ru.one.stream.server.enums.Role;
 import ru.one.stream.server.enums.UserStatus;

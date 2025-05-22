@@ -1,26 +1,22 @@
 package ru.one.stream.server.entities;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-import org.checkerframework.common.aliasing.qual.Unique;
-import org.hibernate.annotations.*;
+import lombok.Getter;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Indexed;
 
-
 import javax.persistence.*;
-import javax.persistence.Entity;
-import javax.persistence.Table;
 import java.util.HashSet;
-import java.util.Locale;
 import java.util.Set;
 
-@Data
 @Entity
 @Table(name = "pattern", uniqueConstraints = {
         @UniqueConstraint(columnNames = "title")})
 @Indexed
+@Data
 public class Pattern {
 
     @Id
@@ -36,11 +32,10 @@ public class Pattern {
     @Cascade({org.hibernate.annotations.CascadeType.REMOVE, org.hibernate.annotations.CascadeType.SAVE_UPDATE})
     private Set<MusicTrack> tracks = new HashSet<>();
 
-    public Pattern(String title) {
-        this.title = title.toLowerCase();
+    public Pattern() {
     }
 
-    public void setTitle(String title) {
+    public Pattern(String title) {
         this.title = title.toLowerCase();
     }
 
@@ -50,19 +45,11 @@ public class Pattern {
         this.tracks = tracks;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Pattern pattern = (Pattern) o;
-        return title.equals(pattern.title);
+    public void setTitle(String title) {
+        this.title = title.toLowerCase();
     }
 
-    @Override
-    public int hashCode() {
-        return title.hashCode();
-    }
 
-    public Pattern() {
-    }
+
+
 }

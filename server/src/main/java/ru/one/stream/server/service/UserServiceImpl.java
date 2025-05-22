@@ -2,17 +2,22 @@ package ru.one.stream.server.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import ru.one.stream.commons.models.UserDetailsDto;
-import ru.one.stream.commons.models.userspace.UserspaceDto;
+import ru.one.stream.server.models.UserDetailsDto;
+import ru.one.stream.server.models.userspace.UserspaceDto;
 import ru.one.stream.server.mapper.UserMapper;
 import ru.one.stream.server.repositories.UserRepository;
 
 @Component
 @RequiredArgsConstructor
-public class UserServiceImpl {
+public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final UserMapper userMapper;
+
+    @Override
+    public UserDetailsDto createUser(UserDetailsDto userTestDto) {
+        return null;
+    }
 
     public UserDetailsDto getUserDetailsByUsername(String username) {
         var optionalUser = userRepository.findUserByUsername(username);
@@ -26,7 +31,7 @@ public class UserServiceImpl {
         else throw new RuntimeException("User not found");
     }
 
-//    public void createUser(User user) {
+    //    public void createUser(User user) {
 //        if (userRepository.findUserByUsername(userDto.getUsername()).isEmpty()) {
 //            try {
 //                User user = new User();
@@ -40,4 +45,5 @@ public class UserServiceImpl {
 //            throw new RepeatException("Пользователь с таким именем уже есть");
 //        }
 //    }
+
 }
