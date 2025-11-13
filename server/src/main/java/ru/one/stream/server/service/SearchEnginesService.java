@@ -46,7 +46,9 @@ public class SearchEnginesService implements SearchService {
         for (Thread thread : threads) {
             thread.join();
         }
-        return inSiteMp3Sercher.searchByLinks(results).stream()
+
+        return inSiteMp3Sercher.searchByLinks(results)
+                .stream()
                 .map(musicTrackMapper::toMusicTrackDto).collect(Collectors.toList());
     }
 

@@ -42,8 +42,9 @@ public class InSiteMp3Sercher {
 
         }
         executor.shutdown();
-        var zz = executor.awaitTermination(6, TimeUnit.SECONDS);
-        System.out.println("Всего ссылок: " + counter + " Поиск не состоялся: " + faultCounter.get());
+        while(!executor.awaitTermination(5, TimeUnit.SECONDS)){}
+
+//        System.out.println("Всего ссылок: " + counter + " Поиск не состоялся: " + faultCounter.get());
         return new HashSet<>(urls);
     }
 

@@ -7,7 +7,7 @@ import ru.one.stream.server.service.InSiteMp3Sercher;
 
 
 public class TestSearchApplication {
-    private final static String SONG_NAME = "Махамайя";
+    private final static String SONG_NAME = "Цой - Группа крови";
 
     public static void main(String[] args) {
         SearchSystem googleSearch = new GoogleSearch();

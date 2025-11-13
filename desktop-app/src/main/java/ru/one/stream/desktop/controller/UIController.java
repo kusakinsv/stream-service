@@ -1,6 +1,8 @@
 package ru.one.stream.desktop.controller;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.one.stream.server.models.MusicTrackDto;
@@ -11,28 +13,15 @@ import java.util.List;
 
 @RestController
 @RequestMapping
+@RequiredArgsConstructor
 public class UIController {
-    @Autowired
-    private SearchService searchService;
-    private final List<MusicTrackDto> trackList = new ArrayList<>();
+    private final SearchService searchService;
 
-    @PostMapping("search")
-    public String searchTrack(Model model, @RequestParam(value = "trackName", required = false) String trackName) {
-        trackList.clear();
-        trackList.addAll(searchService.findMusicTrack(trackName));
-        if (trackList.isEmpty()) {
-            model.addAttribute("playlist", trackList);
-            model.addAttribute("mainPageMessage", "Не найдено");
-            return "search";
-        } else {
-            String mainPageMessage = "Найденные треки: ";
-            model.addAttribute("playlist", trackList);
-            model.addAttribute("mainPageMessage", mainPageMessage);
-            if (trackName == null) {
-                return "no parameters";
-            }
-            return "search";
-        }
+    @CrossOrigin
+    @GetMapping("search")
+    public ResponseEntity<?> searchTrack(@RequestParam(value = "trackName") String trackName) {
+        List<MusicTrackDto> tracks = searchService.findMusicTrack(trackName);
+        return ResponseEntity.ok(tracks);
     }
 }
 
