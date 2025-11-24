@@ -1,6 +1,7 @@
 package ru.one.stream.server.service;
 
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.one.stream.server.models.MusicTrackDto;
@@ -10,33 +11,23 @@ import ru.one.stream.server.entities.Playlist;
 import ru.one.stream.server.entities.PlaylistPosition;
 import ru.one.stream.server.repositories.*;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
 @Service
+@RequiredArgsConstructor
 public class ServerMusicService {
 
-    @Autowired
-    MusicTrackRepository musicTrackRepository;
-
-    @Autowired
-    PatternRepository patternRepository;
-
-    @Autowired
-    MusicTrackFullTextRepository fullTextSearchRepository;
-
-    @Autowired
-    PlaylistRepository playlistRepository;
-
-    @Autowired
-    UserRepository userRepository;
-
-    @Autowired
-    PlaylistPositionRepository playlistPositionRepository;
+    private final MusicTrackRepository musicTrackRepository;
+    private final PatternRepository patternRepository;
+    private final MusicTrackFullTextRepository fullTextSearchRepository;
+    private final PlaylistRepository playlistRepository;
+    private final UserRepository userRepository;
+    private final PlaylistPositionRepository playlistPositionRepository;
 
     //todo допустим, чтобы искал не по всем паттернам а только у этого трека
     public MusicTrack addMusicTrack(String url, String patternTitle) {

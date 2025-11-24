@@ -1,5 +1,6 @@
 package ru.one.stream.server.entities;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import org.hibernate.annotations.Generated;
 import org.hibernate.annotations.GenerationTime;
@@ -9,7 +10,6 @@ import ru.one.stream.server.enums.Role;
 import ru.one.stream.server.enums.UserStatus;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.util.*;
 
 @Data
@@ -31,7 +31,7 @@ public class User {
     @Column(name = "email", unique = true)
     private String email;
 
-    @NotNull
+
     private String password;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
