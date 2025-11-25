@@ -1,13 +1,13 @@
-package ru.one.stream.server.service;
+package ru.one.stream.internetsercher.service;
 
 import lombok.SneakyThrows;
 import org.springframework.stereotype.Component;
-import ru.one.stream.server.models.MusicTrackDto;
-import ru.one.stream.server.mapper.MusicTrackMapper;
-import ru.one.stream.server.searchsystems.DuckDuckGoSearch;
-import ru.one.stream.server.searchsystems.GoogleSearch;
-import ru.one.stream.server.searchsystems.Rambler;
-import ru.one.stream.server.searchsystems.SearchSystem;
+import ru.one.stream.internetsercher.models.MusicTrackDto;
+import ru.one.stream.internetsercher.service.searchsystems.DuckDuckGoSearch;
+import ru.one.stream.internetsercher.service.searchsystems.GoogleSearch;
+import ru.one.stream.internetsercher.service.searchsystems.Rambler;
+import ru.one.stream.internetsercher.service.searchsystems.SearchSystem;
+
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -20,7 +20,6 @@ import java.util.stream.Collectors;
 public class SearchEnginesService implements SearchService {
 
     private InSiteMp3Sercher inSiteMp3Sercher = new InSiteMp3Sercher();
-    private MusicTrackMapper musicTrackMapper = new MusicTrackMapper();
     private final List<SearchSystem> systems = new ArrayList<>() {{
         add(new GoogleSearch());
         add(new DuckDuckGoSearch());
@@ -49,7 +48,7 @@ public class SearchEnginesService implements SearchService {
 
         return inSiteMp3Sercher.searchByLinks(results)
                 .stream()
-                .map(musicTrackMapper::toMusicTrackDto).collect(Collectors.toList());
+                .map(url -> new MusicTrackDto(trackName, url)).collect(Collectors.toList());
     }
 
 }

@@ -1,4 +1,4 @@
-package ru.one.stream.server.searchsystems;
+package ru.one.stream.internetsercher.service.searchsystems;
 
 
 import lombok.SneakyThrows;
@@ -6,7 +6,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import ru.one.stream.server.utils.Utils;
+import ru.one.stream.internetsercher.utils.Utils;
 
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
@@ -35,6 +35,7 @@ public class Rambler implements SearchSystem {
                 linksList.add(link);
             }
         }
+        System.out.println("Rambler: " + linksList.size());
         return linksList;
     }
 

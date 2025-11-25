@@ -1,4 +1,4 @@
-package ru.one.stream.server.searchsystems;
+package ru.one.stream.internetsercher.service.searchsystems;
 
 import java.util.Set;
 

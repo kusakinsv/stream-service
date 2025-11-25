@@ -1,6 +1,7 @@
-package ru.one.stream.server.service;
+package ru.one.stream.internetsercher.service;
 
-import ru.one.stream.server.models.MusicTrackDto;
+
+import ru.one.stream.internetsercher.models.MusicTrackDto;
 
 import java.util.List;
 

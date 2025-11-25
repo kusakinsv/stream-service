@@ -1,4 +1,4 @@
-package ru.one.stream.server.service;
+package ru.one.stream.internetsercher.service;
 
 
 import lombok.SneakyThrows;

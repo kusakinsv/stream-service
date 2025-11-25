@@ -1,43 +1,43 @@
-package ru.one.stream.server.searchsystems;
+package ru.one.stream.internetsercher.service.searchsystems;
 
 import lombok.SneakyThrows;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import ru.one.stream.server.utils.Utils;
+import ru.one.stream.internetsercher.utils.Utils;
 
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.HashSet;
 import java.util.Set;
 
-public class DuckDuckGoSearch implements SearchSystem {
-    private final static String DDG_URL = "https://duckduckgo.com/?q=";
+public class GoogleSearch implements SearchSystem {
+    public static final String GOOGLE_SEARCH_URL = "https://www.google.com/search?q=";
     private final static String download = "+скачать";
-    private final static String otherSettings = "&hps=2";
 
     @SneakyThrows
     public Set<String> searchLinks(String name) {
         Set<String> linksList = new HashSet<>();
-        String query = DDG_URL + Utils.toConvertedString(name) + download + otherSettings;
-//        System.out.println("DDG: " + query);
+        String query = GOOGLE_SEARCH_URL + Utils.toConvertedString(name) + download;
         Document document = Jsoup.connect(query)
                 .userAgent("Chrome/4.0.249.0 Safari/532.5")
-                .referrer("http://www.duckduckgo.com")
+                .referrer("http://www.google.com")
                 .get();
-        Elements elementList = document.select("h2");
-        for (Element element : elementList) {
-            String link = toReadableLink(element.getElementsByAttribute("href").attr("href"));
-            linksList.add(link);
+
+        Elements results = document.select("h3");
+        for (Element element : results) {
+            String link = element.parent().parent().parent().attr("href");
+            link = toReadableLink(link);
+            if (!link.isEmpty()) linksList.add(link);
         }
+        System.out.println("Google: " + linksList.size());
         return linksList;
     }
 
     private String toReadableLink(String link) {
         String readableLink = URLDecoder.decode(URLDecoder.decode(link, StandardCharsets.UTF_8), StandardCharsets.UTF_8);
-        readableLink = readableLink.split("uddg=")[1].split("&rut=")[0];
+        if (!readableLink.isEmpty()) readableLink = readableLink.split("q=")[1].split("&sa=")[0];
         return readableLink;
     }
-
 }

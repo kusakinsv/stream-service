@@ -13,7 +13,7 @@ import ru.one.stream.server.service.SearchService;
 public class AppConfiguration {
 
     @Bean
-    SearchService searchService() {
+    public SearchService searchService() {
         return new SearchEnginesService();
     }
 

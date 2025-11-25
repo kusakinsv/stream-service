@@ -1,25 +1,26 @@
-package ru.one.stream.server.searchsystems;
+package ru.one.stream.internetsercher.service.searchsystems;
 
 import lombok.SneakyThrows;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import ru.one.stream.server.utils.Utils;
+import ru.one.stream.internetsercher.utils.Utils;
 
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.HashSet;
 import java.util.Set;
 
-public class GoogleSearch implements SearchSystem {
+public class MuzmoGoogleSearch implements SearchSystem {
+
     public static final String GOOGLE_SEARCH_URL = "https://www.google.com/search?q=";
-    private final static String download = "+скачать";
+    private final static String muzmo = "+muzmo";
 
     @SneakyThrows
     public Set<String> searchLinks(String name) {
         Set<String> linksList = new HashSet<>();
-        String query = GOOGLE_SEARCH_URL + Utils.toConvertedString(name) + download;
+        String query = GOOGLE_SEARCH_URL + Utils.toConvertedString(name) + muzmo;
         Document document = Jsoup.connect(query)
                 .userAgent("Chrome/4.0.249.0 Safari/532.5")
                 .referrer("http://www.google.com")
@@ -31,6 +32,7 @@ public class GoogleSearch implements SearchSystem {
             link = toReadableLink(link);
             if (!link.isEmpty()) linksList.add(link);
         }
+        System.out.println("Muzmo: " + linksList.size());
         return linksList;
     }
 
@@ -39,4 +41,6 @@ public class GoogleSearch implements SearchSystem {
         if (!readableLink.isEmpty()) readableLink = readableLink.split("q=")[1].split("&sa=")[0];
         return readableLink;
     }
+
+
 }

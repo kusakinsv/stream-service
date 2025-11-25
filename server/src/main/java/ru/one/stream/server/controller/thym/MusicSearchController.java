@@ -8,7 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.one.stream.server.models.MusicTrackDto;
-import ru.one.stream.server.service.SearchService;
+import ru.one.stream.internetsercher.service.SearchService;
 import ru.one.stream.server.utils.UserDataHolder;
 
 import java.util.ArrayList;
