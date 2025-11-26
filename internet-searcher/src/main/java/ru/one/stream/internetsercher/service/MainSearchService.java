@@ -2,12 +2,9 @@ package ru.one.stream.internetsercher.service;
 
 import lombok.SneakyThrows;
 import org.springframework.stereotype.Component;
-import ru.one.stream.internetsercher.models.MusicTrackDto;
+import ru.one.stream.internetsercher.models.MusicTrack;
 import ru.one.stream.internetsercher.service.searchsystems.DuckDuckGoSearch;
-import ru.one.stream.internetsercher.service.searchsystems.GoogleSearch;
 import ru.one.stream.internetsercher.service.searchsystems.Rambler;
-import ru.one.stream.internetsercher.service.searchsystems.SearchSystem;
-
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -17,18 +14,17 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.stream.Collectors;
 
 @Component
-public class SearchEnginesService implements SearchService {
+public class MainSearchService {
+
 
     private InSiteMp3Sercher inSiteMp3Sercher = new InSiteMp3Sercher();
     private final List<SearchSystem> systems = new ArrayList<>() {{
-        add(new GoogleSearch());
         add(new DuckDuckGoSearch());
         add(new Rambler());
     }};
 
     @SneakyThrows
-    @Override
-    public List<MusicTrackDto> findMusicTrack(String trackName) {
+    public List<MusicTrack> search(String trackName) {
         ConcurrentLinkedQueue<String> results = new ConcurrentLinkedQueue<>();
         Set<Thread> threads = new HashSet<>();
         for (SearchSystem system : systems) {
@@ -48,7 +44,7 @@ public class SearchEnginesService implements SearchService {
 
         return inSiteMp3Sercher.searchByLinks(results)
                 .stream()
-                .map(url -> new MusicTrackDto(trackName, url)).collect(Collectors.toList());
+                .map(url -> new MusicTrack(trackName, url)).collect(Collectors.toList());
     }
 
 }

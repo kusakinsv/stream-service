@@ -3,8 +3,8 @@ package ru.one.stream.internetsercher.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.one.stream.internetsercher.models.MusicTrackDto;
-import ru.one.stream.internetsercher.service.SearchService;
+import ru.one.stream.internetsercher.models.MusicTrack;
+import ru.one.stream.internetsercher.service.MainSearchService;
 
 import java.util.List;
 
@@ -12,12 +12,12 @@ import java.util.List;
 @RequestMapping("api")
 @RequiredArgsConstructor
 public class MusicSearchController {
-    private final SearchService searchService;
+    private final MainSearchService searchService;
 
     @CrossOrigin
     @GetMapping("search")
     public ResponseEntity<?> searchTrack(@RequestParam(value = "trackName") String trackName) {
-        List<MusicTrackDto> tracks = searchService.findMusicTrack(trackName);
+        List<MusicTrack> tracks = searchService.search(trackName);
         return ResponseEntity.ok(tracks);
     }
 }

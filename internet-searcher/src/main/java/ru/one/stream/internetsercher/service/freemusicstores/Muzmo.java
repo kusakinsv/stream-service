@@ -1,0 +1,49 @@
+package ru.one.stream.internetsercher.service.freemusicstores;
+
+import lombok.SneakyThrows;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+import ru.one.stream.internetsercher.models.MusicTrack;
+import ru.one.stream.internetsercher.utils.Utils;
+
+import java.util.HashSet;
+import java.util.Set;
+
+/**
+ * su.muzmo.cc/
+ * rux.muzmo.cc/
+ */
+
+public class Muzmo implements MusicResource {
+    public static final String URL = "https://su.muzmo.cc";
+    public static final String QUERY_URL = URL + "/search?q=";
+
+    @SneakyThrows
+    @Override
+    public Set<MusicTrack> search(String trackName) {
+        String query = QUERY_URL + Utils.toConvertedStringWithPlus(trackName);
+        System.out.println(query);
+        Document document = Jsoup.connect(query)
+                .followRedirects(true)
+                .maxBodySize(0)
+                .timeout(10000)
+                .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36")
+                .referrer("http://www.google.com")
+                .get();
+
+        Set<MusicTrack> tracks = new HashSet<>();
+        Elements elements = document.body().getElementsByAttribute("data-file");
+        for (Element elem : elements.asList()) {
+            String partUrl = elem.attr("data-file");
+            String url = URL + partUrl;
+            String finalName = elem.attr("data-title");
+            MusicTrack musicTrackDto = new MusicTrack(finalName, url);
+            System.out.println(musicTrackDto);
+            tracks.add(musicTrackDto);
+        }
+
+        return tracks;
+    }
+}

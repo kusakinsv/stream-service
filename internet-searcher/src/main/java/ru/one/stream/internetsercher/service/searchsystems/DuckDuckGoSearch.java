@@ -5,12 +5,15 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import ru.one.stream.internetsercher.models.MusicTrack;
+import ru.one.stream.internetsercher.service.SearchSystem;
 import ru.one.stream.internetsercher.utils.Utils;
 
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class DuckDuckGoSearch implements SearchSystem {
     private final static String DDG_URL = "https://duckduckgo.com/?q=";
@@ -20,8 +23,7 @@ public class DuckDuckGoSearch implements SearchSystem {
     @SneakyThrows
     public Set<String> searchLinks(String name) {
         Set<String> linksList = new HashSet<>();
-        String query = DDG_URL + Utils.toConvertedString(name) + download + otherSettings;
-//        System.out.println("DDG: " + query);
+        String query = DDG_URL + Utils.toConvertedStringWithPlus(name) + download + otherSettings;
         Document document = Jsoup.connect(query)
                 .userAgent("Chrome/4.0.249.0 Safari/532.5")
                 .referrer("http://www.duckduckgo.com")
@@ -33,6 +35,12 @@ public class DuckDuckGoSearch implements SearchSystem {
         }
         System.out.println("DuckDuckGo: " + linksList.size());
         return linksList;
+    }
+
+    @Override
+    public Set<MusicTrack> search(String query) {
+        return searchLinks(query).stream().map(url -> new MusicTrack(query, url))
+                .collect(Collectors.toSet());
     }
 
     private String toReadableLink(String link) {

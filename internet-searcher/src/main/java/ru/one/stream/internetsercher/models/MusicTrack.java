@@ -1,29 +1,27 @@
 package ru.one.stream.internetsercher.models;
 
+import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class MusicTrackDto {
+public class MusicTrack {
 
-    private Long id;
+    @NotEmpty
     private String name;
+    @NotEmpty
     private String url;
     private String duration;
 
-    public MusicTrackDto(String name, String url) {
+    public MusicTrack(String name, String url) {
         this.name = name;
         this.url = url;
-    }
-
-    public MusicTrackDto createDublicate() {
-        return new MusicTrackDto(this.name, this.url);
     }
 
     @Override
     public String toString() {
         return String.format(
-                "MusicTrackDto (id=%s, name=%s, url=%s)", this.id, this.name, this.url);
+                "MusicTrackDto (name=%s, url=%s)", this.name, this.url);
     }
 }

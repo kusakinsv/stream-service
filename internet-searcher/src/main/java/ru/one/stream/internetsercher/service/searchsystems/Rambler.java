@@ -6,12 +6,15 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import ru.one.stream.internetsercher.models.MusicTrack;
+import ru.one.stream.internetsercher.service.SearchSystem;
 import ru.one.stream.internetsercher.utils.Utils;
 
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 //Пока не работает
 public class Rambler implements SearchSystem {
@@ -24,7 +27,7 @@ public class Rambler implements SearchSystem {
     public Set<String> searchLinks(String name) {
         Set<String> linksList = new HashSet<>();
         for (int i = 0; i < PAGES; i++) {
-            String query = DDG_URL + Utils.toConvertedString(name) + download + otherSettings + (i + 1);
+            String query = DDG_URL + Utils.toConvertedStringWithPlus(name) + download + otherSettings + (i + 1);
             Document document = Jsoup.connect(query)
                     .userAgent("Chrome/4.0.249.0 Safari/532.5")
                     .referrer("http://www.duckduckgo.com")
@@ -37,6 +40,12 @@ public class Rambler implements SearchSystem {
         }
         System.out.println("Rambler: " + linksList.size());
         return linksList;
+    }
+
+    @Override
+    public Set<MusicTrack> search(String query) {
+        return searchLinks(query).stream().map(url -> new MusicTrack(query, url))
+                .collect(Collectors.toSet());
     }
 
     private String toReadableLink(String link) {
