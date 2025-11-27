@@ -6,17 +6,14 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.jsoup.select.Evaluator;
-import ru.one.stream.internetsercher.models.MusicTrack;
-import ru.one.stream.internetsercher.service.SearchSystem;
 import ru.one.stream.internetsercher.utils.Utils;
 
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.stream.Collectors;
 
-public class BraveSearch implements SearchSystem {
+public class BraveSearch implements SearchSystemMusicFinder {
     public static final String SEARCH_URL = "https://search.brave.com/search?q=";
     private final static String download = "+скачать&source=desktop";
 
@@ -48,9 +45,4 @@ public class BraveSearch implements SearchSystem {
         return readableLink;
     }
 
-    @Override
-    public Set<MusicTrack> search(String query) {
-        return searchLinks(query).stream().map(url -> new MusicTrack(query, url))
-                .collect(Collectors.toSet());
-    }
 }

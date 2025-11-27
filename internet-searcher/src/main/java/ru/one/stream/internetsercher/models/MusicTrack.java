@@ -1,27 +1,22 @@
 package ru.one.stream.internetsercher.models;
 
 import jakarta.validation.constraints.NotEmpty;
+import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @Data
-@NoArgsConstructor
+@AllArgsConstructor
 public class MusicTrack {
 
     @NotEmpty
     private String name;
     @NotEmpty
     private String url;
-    private String duration;
-
-    public MusicTrack(String name, String url) {
-        this.name = name;
-        this.url = url;
-    }
 
     @Override
     public String toString() {
         return String.format(
-                "MusicTrackDto (name=%s, url=%s)", this.name, this.url);
+                "MusicTrack (name=%s, url=%s)", this.name, this.url);
     }
 }

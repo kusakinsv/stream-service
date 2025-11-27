@@ -15,16 +15,16 @@ import java.util.Set;
  * su.muzmo.cc/
  * rux.muzmo.cc/
  */
-
 public class Muzmo implements MusicResource {
     public static final String URL = "https://su.muzmo.cc";
+    public static final String IP = "http://5.79.82.86";//не работает
     public static final String QUERY_URL = URL + "/search?q=";
+    public static final String QUERY_IP = IP + "/search?q=";
 
     @SneakyThrows
     @Override
     public Set<MusicTrack> search(String trackName) {
         String query = QUERY_URL + Utils.toConvertedStringWithPlus(trackName);
-        System.out.println(query);
         Document document = Jsoup.connect(query)
                 .followRedirects(true)
                 .maxBodySize(0)
@@ -40,7 +40,6 @@ public class Muzmo implements MusicResource {
             String url = URL + partUrl;
             String finalName = elem.attr("data-title");
             MusicTrack musicTrackDto = new MusicTrack(finalName, url);
-            System.out.println(musicTrackDto);
             tracks.add(musicTrackDto);
         }
 

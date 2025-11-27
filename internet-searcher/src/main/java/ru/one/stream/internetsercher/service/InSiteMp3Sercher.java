@@ -6,6 +6,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.springframework.stereotype.Component;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -15,6 +16,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
+@Component
 public class InSiteMp3Sercher {
 
     @SneakyThrows
@@ -55,9 +57,9 @@ public class InSiteMp3Sercher {
             Document document = Jsoup.connect(link)
                     .userAgent("Chrome/4.0.249.0 Safari/532.5")
                     .referrer("http://www.duckduckgo.com")
-                    .timeout(6000) // тут может быть любое значение
+                    .timeout(6000)
                     .get();
-            Elements elements = document.getElementsByAttributeValueEnding("href", ".mp3");
+            Elements elements = document.body().getElementsByAttributeValueEnding("href", ".mp3");
             for (Element element : elements) {
                 String foundedLink = element.attr("href");
                 if (isLink(foundedLink)) {

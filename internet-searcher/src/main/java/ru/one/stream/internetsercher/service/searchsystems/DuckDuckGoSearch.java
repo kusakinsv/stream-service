@@ -5,42 +5,70 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import ru.one.stream.internetsercher.models.MusicTrack;
-import ru.one.stream.internetsercher.service.SearchSystem;
+import ru.one.stream.internetsercher.utils.Constants;
 import ru.one.stream.internetsercher.utils.Utils;
 
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.stream.Collectors;
 
-public class DuckDuckGoSearch implements SearchSystem {
+public class DuckDuckGoSearch implements SearchSystemMusicFinder {
     private final static String DDG_URL = "https://duckduckgo.com/?q=";
     private final static String download = "+скачать";
     private final static String otherSettings = "&hps=2";
+    private final static int buttonClicks = 5;
 
     @SneakyThrows
     public Set<String> searchLinks(String name) {
         Set<String> linksList = new HashSet<>();
-        String query = DDG_URL + Utils.toConvertedStringWithPlus(name) + download + otherSettings;
+        String query = DDG_URL + Utils.toConvertedStringWithPlus(name) + "+" + download + otherSettings;
         Document document = Jsoup.connect(query)
                 .userAgent("Chrome/4.0.249.0 Safari/532.5")
                 .referrer("http://www.duckduckgo.com")
                 .get();
-        Elements elementList = document.select("h2");
-        for (Element element : elementList) {
-            String link = toReadableLink(element.getElementsByAttribute("href").attr("href"));
-            linksList.add(link);
-        }
-        System.out.println("DuckDuckGo: " + linksList.size());
-        return linksList;
-    }
 
-    @Override
-    public Set<MusicTrack> search(String query) {
-        return searchLinks(query).stream().map(url -> new MusicTrack(query, url))
-                .collect(Collectors.toSet());
+        Elements elementList = document.body().select("h2");
+        for (Element element : elementList) {
+            String link = toReadableLink(element.child(0).attr("href"));
+            if (Constants.IGNORABLE_RESOURCES.stream().noneMatch(link::contains)) {
+                linksList.add(link);
+            }
+        }
+//        try (WebClient webClient = new WebClient()) {
+//            webClient.getOptions().setJavaScriptEnabled(true);
+//            webClient.getOptions().setThrowExceptionOnScriptError(false);
+//
+//            // Загрузка страницы
+//            HtmlPage page = webClient.getPage(query);
+//            webClient.waitForBackgroundJavaScript(1000);
+//            // ИЛИ по классу/ID
+////            HtmlButton buttonByClass = page.querySelector("button#more-results");
+//            int counter = 0;
+////            while (counter < buttonClicks) {
+//                HtmlButton buttonByClass = page.getFirstByXPath("//button[contains(text(), 'Больше результатов')]");
+//            System.out.println(page.asXml());
+//            if (buttonByClass != null) {
+//                    // Кликаем на кнопку
+//                    buttonByClass.click();
+//                    // Ждем загрузки нового контента
+//
+//                    // Работаем с обновленной страницей
+//                    System.out.println("Новый контент загружен!");
+//                    counter++;
+//                }else {
+//                    System.out.println("Кнопка не найдена");
+//                }
+//                webClient.waitForBackgroundJavaScript(1000);
+////            }
+//            System.out.println(page.asXml());
+//            List<HtmlElement> elems = page.getBody().getByXPath("//h2/a[@href]");
+//            for (HtmlElement elem : elems) {
+//                String link = elem.getAttribute("href");
+//                System.out.println(link);
+//            }
+//        }
+        return linksList;
     }
 
     private String toReadableLink(String link) {
@@ -50,3 +78,8 @@ public class DuckDuckGoSearch implements SearchSystem {
     }
 
 }
+/*    Elements elementList = document.body().getElementsByAttribute("href");
+        for (Element element : elementList) {
+            String link = toReadableLink(element.attr("href"));
+            linksList.add(link);
+        }*/

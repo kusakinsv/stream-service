@@ -8,7 +8,6 @@ import org.jsoup.select.Elements;
 import ru.one.stream.internetsercher.models.MusicTrack;
 import ru.one.stream.internetsercher.utils.Utils;
 
-import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
