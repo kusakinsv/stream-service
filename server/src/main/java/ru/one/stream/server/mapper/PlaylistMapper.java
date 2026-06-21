@@ -2,8 +2,8 @@ package ru.one.stream.server.mapper;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import ru.one.stream.server.models.userspace.PlaylistDto;
-import ru.one.stream.server.models.userspace.PositionDto;
+import ru.one.stream.server.dto.PlaylistDto;
+import ru.one.stream.server.dto.PositionDto;
 import ru.one.stream.server.entities.Playlist;
 
 import java.util.Comparator;

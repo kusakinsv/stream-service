@@ -5,6 +5,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.springframework.stereotype.Component;
 import ru.one.stream.internetsercher.utils.Constants;
 import ru.one.stream.internetsercher.utils.Utils;
 
@@ -13,6 +14,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.HashSet;
 import java.util.Set;
 
+@Component
 public class DuckDuckGoSearch implements SearchSystemMusicFinder {
     private final static String DDG_URL = "https://duckduckgo.com/?q=";
     private final static String download = "+скачать";

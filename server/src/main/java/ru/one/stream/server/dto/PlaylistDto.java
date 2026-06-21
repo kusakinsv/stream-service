@@ -1,4 +1,4 @@
-package ru.one.stream.server.models.userspace;
+package ru.one.stream.server.dto;
 
 import lombok.Data;
 

@@ -9,10 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>ru.one.stream</groupId>
-    <artifactId>internet-searcher</artifactId>
+    <artifactId>proxy-server</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>internet-searcher</name>
-    <description>internet-searcher</description>
+    <name>proxy-server</name>
+    <description>proxy-server</description>
 
     <properties>
         <java.version>21</java.version>

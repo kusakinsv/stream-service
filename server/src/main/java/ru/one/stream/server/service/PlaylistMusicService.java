@@ -3,7 +3,7 @@ package ru.one.stream.server.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import ru.one.stream.server.models.MusicTrackDto;
+import ru.one.stream.server.dto.MusicTrackDto;
 import ru.one.stream.server.entities.MusicTrack;
 import ru.one.stream.server.entities.Pattern;
 import ru.one.stream.server.entities.User;

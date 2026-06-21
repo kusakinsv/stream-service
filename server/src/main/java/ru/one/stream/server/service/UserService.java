@@ -1,14 +1,12 @@
 package ru.one.stream.server.service;
 
-import ru.one.stream.server.models.UserDetailsDto;
-import ru.one.stream.server.models.userspace.UserspaceDto;
+import ru.one.stream.server.dto.UserDetailsDto;
 
 
 public interface UserService {
 
-    UserDetailsDto createUser(UserDetailsDto userTestDto);
+    UserDetailsDto getUserByUsername(String userName);
+    UserDetailsDto getUserById(String userId);
+    UserDetailsDto createNewUser(String username);
 
-    UserDetailsDto getUserDetailsByUsername(String username);
-
-    UserspaceDto getUserspaceByUsername(String username);
 }

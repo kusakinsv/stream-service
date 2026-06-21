@@ -1,10 +1,12 @@
 server:
-  port: 8080
+  port: 8123
 
 spring:
   application:
-    name: music-internet-searcher
-
+    name: music-proxy-server
+  threads:
+    virtual:
+      enabled: true
 springdoc:
   api-docs:
     path: /v3/api-docs

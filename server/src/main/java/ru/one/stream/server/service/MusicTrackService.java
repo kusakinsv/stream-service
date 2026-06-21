@@ -2,9 +2,8 @@ package ru.one.stream.server.service;
 
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.one.stream.server.models.MusicTrackDto;
+import ru.one.stream.server.dto.MusicTrackDto;
 import ru.one.stream.server.entities.MusicTrack;
 import ru.one.stream.server.entities.Pattern;
 import ru.one.stream.server.entities.Playlist;
@@ -20,7 +19,7 @@ import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
-public class ServerMusicService {
+public class MusicTrackService {
 
     private final MusicTrackRepository musicTrackRepository;
     private final PatternRepository patternRepository;

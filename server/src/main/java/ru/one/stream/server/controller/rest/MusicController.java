@@ -3,7 +3,7 @@ package ru.one.stream.server.controller.rest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.one.stream.server.models.MusicTrackDto;
+import ru.one.stream.server.dto.MusicTrackDto;
 import ru.one.stream.server.service.ClientMusicService;
 
 @RequiredArgsConstructor
@@ -17,11 +17,6 @@ public class MusicController {
     public ResponseEntity<?> addMusic(@RequestBody MusicTrackDto dto) {
         return ResponseEntity.ok(clientMusicService.addMusicTrackToPublicLibrary(dto));
     }
-
-//    @PostMapping("/addToPlaylist/{playlistId}")
-//    public ResponseEntity<?> addMusicToPlaylist(@RequestBody MusicTrackDto dto, @PathVariable Long playlistId) {
-//        return ResponseEntity.ok(musicService.addMusicTrackToPlaylist(dto, playlistId));
-//    }
 
 
 

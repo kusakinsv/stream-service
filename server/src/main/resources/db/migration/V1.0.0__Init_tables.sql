@@ -32,6 +32,7 @@ CREATE TABLE IF NOT EXISTS music_track
 (
     id      int8 primary key,
     track_name VARCHAR(50) NOT NULL,
+    duration int8 default NULL,
     url VARCHAR(700) UNIQUE NOT NULL,
     creation_date VARCHAR(19)
 );

@@ -1,6 +1,6 @@
 package ru.one.stream.server.mapper;
 
-import ru.one.stream.server.models.MusicTrackDto;
+import ru.one.stream.server.dto.MusicTrackDto;
 import ru.one.stream.server.utils.TrackUtils;
 
 public class MusicTrackMapper {

@@ -3,7 +3,7 @@ package ru.one.stream.server.service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import ru.one.stream.server.models.MusicTrackDto;
+import ru.one.stream.server.dto.MusicTrackDto;
 
 @Component
 public class ClientMusicService {

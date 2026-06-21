@@ -17,6 +17,8 @@
     <modules>
         <module>server</module>
         <module>desktop-app</module>
+        <module>internet-searcher</module>
+        <module>proxy-server</module>
     </modules>
     <properties>
         <java.version>21</java.version>

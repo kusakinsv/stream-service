@@ -1,4 +1,4 @@
-package ru.one.stream.server.models.userspace;
+package ru.one.stream.server.dto;
 
 import lombok.Data;
 
@@ -9,6 +9,6 @@ public class UserspaceDto {
 
     private String username;
 
-    private LinkedList<PlaylistDto> playlistDtos;
+    private LinkedList<PlaylistDto> playlists;
 
 }

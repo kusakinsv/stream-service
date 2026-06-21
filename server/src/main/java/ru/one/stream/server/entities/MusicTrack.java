@@ -9,6 +9,7 @@ import org.hibernate.annotations.Generated;
 import org.hibernate.annotations.GenerationTime;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashSet;
@@ -28,6 +29,9 @@ public class MusicTrack {
     @Column(name = "track_name")
     private String trackName;
 
+    @Column(name = "duration")
+    private Long duration;
+
     @Column(name = "url", unique = true)
     private String url;
 
@@ -40,15 +44,7 @@ public class MusicTrack {
     )
     private Set<Pattern> patterns = new HashSet<>();
 
-    private String creationDate;
-
-    public LocalDateTime getCreationDate() {
-        return LocalDateTime.parse(creationDate, dtf);
-    }
-
-    public void setCreationDate(LocalDateTime creationDate) {
-        this.creationDate = creationDate.format(dtf);
-    }
+    private LocalDateTime creationDate;
 
     @Override
     public boolean equals(Object o) {

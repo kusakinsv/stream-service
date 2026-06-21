@@ -1,7 +1,7 @@
 package ru.one.stream.server.mapper;
 
 import org.springframework.stereotype.Component;
-import ru.one.stream.server.models.userspace.PositionDto;
+import ru.one.stream.server.dto.PositionDto;
 import ru.one.stream.server.entities.PlaylistPosition;
 
 @Component
