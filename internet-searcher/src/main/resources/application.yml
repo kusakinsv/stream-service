@@ -4,9 +4,15 @@ server:
 spring:
   application:
     name: music-internet-searcher
+  threads:
+    virtual:
+      enabled: true
 
 springdoc:
   api-docs:
     path: /v3/api-docs
   swagger-ui:
     path: /index.html
+
+stream-service:
+  proxy-server.url: http://localhost:8123

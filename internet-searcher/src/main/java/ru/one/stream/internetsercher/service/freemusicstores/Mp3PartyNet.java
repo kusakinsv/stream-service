@@ -5,7 +5,8 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import ru.one.stream.internetsercher.models.MusicTrackResult;
+import org.springframework.stereotype.Component;
+import ru.one.stream.internetsercher.models.MusicTrack;
 import ru.one.stream.internetsercher.utils.Utils;
 
 import java.util.HashSet;
@@ -14,12 +15,13 @@ import java.util.Set;
 /**
  * mp3party.net
  */
+@Component
 public class Mp3PartyNet implements MusicResource {
     public static final String URL = "https://mp3party.net/search?q=";
 
     @SneakyThrows
     @Override
-    public Set<MusicTrackResult> search(String trackName) {
+    public Set<MusicTrack> search(String trackName) {
         String query = URL + Utils.toConvertedStringWithSpace(trackName);
         Document document = Jsoup.connect(query)
                 .followRedirects(true)
@@ -29,7 +31,7 @@ public class Mp3PartyNet implements MusicResource {
                 .referrer("http://www.google.com")
                 .get();
 
-        Set<MusicTrackResult> tracks = new HashSet<>();
+        Set<MusicTrack> tracks = new HashSet<>();
         Elements elements = document.body().getElementsByAttribute("data-js-url");
         for (Element elem : elements.asList()) {
             String url = elem.attr("data-js-url");
@@ -37,7 +39,7 @@ public class Mp3PartyNet implements MusicResource {
             String name = elem.attr("data-js-song-title");
             String finalName = name + " - " + artist;
             if (!url.isEmpty()) {
-                MusicTrackResult musicTrackDto = new MusicTrackResult(finalName, url);
+                MusicTrack musicTrackDto = new MusicTrack(finalName, url);
                 tracks.add(musicTrackDto);
             }
         }

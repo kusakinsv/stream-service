@@ -11,7 +11,6 @@ import ru.one.stream.server.repositories.UserRepository;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
-    private final UserMapper userMapper;
 
     public UserDetailsDto createNewUser(UserDetailsDto userTestDto) {
         return null;

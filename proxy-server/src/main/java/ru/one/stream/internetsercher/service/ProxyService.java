@@ -19,7 +19,7 @@ public class ProxyService {
         add("Access-Control-Expose-Headers", "Content-Range, Accept-Ranges");
     }};
 
-    public static final String ZERO_RANGE = "bytes=0-";
+    public static final String ZERO_RANGE = "bytes=0-1023";
     public static final String CONTENT_RANGE_HEADER = "Content-Range";
 
     private final RestTemplate restTemplate;

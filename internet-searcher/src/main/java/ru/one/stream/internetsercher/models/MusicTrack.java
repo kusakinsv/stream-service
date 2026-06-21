@@ -6,20 +6,12 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class MusicTrackResult {
-
-    public MusicTrackResult(String name, String url) {
-        this.name = name;
-        this.url = url;
-        this.hasCorsSecurity = false;
-    }
+public class MusicTrack {
 
     @NotEmpty
     private String name;
     @NotEmpty
     private String url;
-
-    private boolean hasCorsSecurity;
 
     @Override
     public String toString() {
