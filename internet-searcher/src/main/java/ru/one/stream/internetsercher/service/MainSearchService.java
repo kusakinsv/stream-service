@@ -2,6 +2,7 @@ package ru.one.stream.internetsercher.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import ru.one.stream.internetsercher.models.MusicTrack;
@@ -12,8 +13,13 @@ import ru.one.stream.internetsercher.utils.VirtualExecutorService;
 
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class MainSearchService {
@@ -31,45 +37,71 @@ public class MainSearchService {
 
     @SneakyThrows
     public List<MusicTrack> search(String trackName) {
-        Set<CompletableFuture<Collection<MusicTrack>>> featureList = new HashSet<>();
+        Set<CompletableFuture<MusicTrack>> featureList = ConcurrentHashMap.newKeySet();
+        List<CompletableFuture<Void>> searchFutures = new ArrayList<>();
+
         for (SearchEngine system : musicResources) {
-            CompletableFuture<Collection<MusicTrack>> feature = CompletableFuture.supplyAsync(() -> system.search(trackName), virtualExecutorService);
-            featureList.add(feature);
+            CompletableFuture<Void> searchFuture = CompletableFuture.supplyAsync(() -> system.search(trackName), virtualExecutorService)
+                    .thenAcceptAsync(trackList -> {
+                        if (trackList == null || trackList.isEmpty()) {
+                            return;
+                        }
+
+                        trackList.stream()
+                                .map(track -> CompletableFuture.supplyAsync(() -> {
+                                    try {
+                                        ValidationResult validationResult = validateAudioService.validateUrl(track.getUrl());
+                                        if (validationResult.isValid()) {
+                                            if (validationResult.isNeedProxy()) {
+                                                track.setUrl(createProxyUrl(validationResult.getFinalUrl()));
+                                            } else {
+                                                track.setUrl(validationResult.getFinalUrl());
+                                            }
+                                            return track;
+                                        } else {
+                                            return null;
+                                        }
+                                    } catch (Exception e) {
+                                        log.warn("Ошибка валидации трека: {}", e.getMessage());
+                                        return null;
+                                    }
+                                }, virtualExecutorService).exceptionally(ex -> {
+                                    log.warn("Ошибка при валидации: {}", ex.getMessage());
+                                    return null;
+                                })).forEach(featureList::add);
+                    }, virtualExecutorService).exceptionally(ex -> {
+                        System.err.println("Ошибка поиска в системе: " + ex.getMessage());
+                        return null;
+                    });
+            searchFutures.add(searchFuture);
         }
 
-        List<MusicTrack> musicTracks = CompletableFuture.allOf(featureList.toArray(CompletableFuture[]::new))
-                .thenApply(f -> featureList.stream()
-                        .map(CompletableFuture::join)
-                        .flatMap(Collection::stream)
-                        .collect(Collectors.toList())
-                ).get();
+        try {
+            //Завершение поиска
+            CompletableFuture.allOf(searchFutures.toArray(new CompletableFuture[0]))
+                    .get();
 
-        featureList.clear();
+            //Таймаут на валидацию
+            CompletableFuture.allOf(featureList.toArray(new CompletableFuture[0]))
+                    .get(15, TimeUnit.SECONDS);
 
-        Set<CompletableFuture<MusicTrack>> validFeatureList = new HashSet<>();
-        for (MusicTrack musicTrack : musicTracks) {
-            CompletableFuture<MusicTrack> feature = CompletableFuture.supplyAsync(() -> {
-                ValidationResult validationResult = validateAudioService.validateUrl(musicTrack.getUrl());
-                if (validationResult.isValid()) {
-                    if (validationResult.isNeedProxy()) {
-                        musicTrack.setUrl(createProxyUrl(validationResult.getFinalUrl()));
-                    } else {
-                        musicTrack.setUrl(validationResult.getFinalUrl());
-                    }
-                    return musicTrack;
-                } else {
-                    throw new RuntimeException("track is invalid");
-                }
-            }, virtualExecutorService).exceptionally(throwable -> {
-                return null;
-            });
-            validFeatureList.add(feature);
+            List<MusicTrack> allTracks = featureList.stream()
+                    .map(CompletableFuture::join)
+                    .filter(Objects::nonNull)
+                    .toList();
+
+            System.out.println("Найдено треков: " + allTracks.size());
+            return allTracks;
+        } catch (TimeoutException e) {
+            log.warn("Превышено время ожидания");
+            List<MusicTrack> partialResults = featureList.stream()
+                    .filter(CompletableFuture::isDone)
+                    .map(CompletableFuture::join)
+                    .filter(Objects::nonNull)
+                    .toList();
+            log.debug("Найдено треков по таймауту: {}", partialResults.size());
+            return partialResults;
         }
-
-        var result = CompletableFuture.allOf(featureList.toArray(CompletableFuture[]::new))
-                .thenApply(f -> validFeatureList.stream().map(CompletableFuture::join)
-                        .toList()).get().stream().filter(Objects::nonNull).toList();
-        return result;
     }
 
     private String createProxyUrl(String url) {
