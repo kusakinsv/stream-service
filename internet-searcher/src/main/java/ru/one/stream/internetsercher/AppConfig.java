@@ -18,7 +18,8 @@ public class AppConfig {
     @Bean
     public CloseableHttpClient httpClient(){
         RequestConfig config = RequestConfig.custom()
-                .setConnectTimeout(5000)
+                .setConnectTimeout(10000)
+                .setConnectionRequestTimeout(15000)
                 .setSocketTimeout(10000)
                 .setRedirectsEnabled(false)
                 .setMaxRedirects(10)

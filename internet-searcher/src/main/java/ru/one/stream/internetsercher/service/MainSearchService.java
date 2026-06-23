@@ -29,7 +29,7 @@ public class MainSearchService {
     private final ValidateAudioService validateAudioService;
     private final List<SearchEngine> musicResources = new ArrayList<>() {{
         add(new Muzmo());
-        add(new Mp3PartyNet());
+//        add(new Mp3PartyNet());
     }};
 
     @Value("${stream-service.proxy-server.url}")
@@ -46,7 +46,6 @@ public class MainSearchService {
                         if (trackList == null || trackList.isEmpty()) {
                             return;
                         }
-
                         trackList.stream()
                                 .map(track -> CompletableFuture.supplyAsync(() -> {
                                     try {
@@ -65,12 +64,13 @@ public class MainSearchService {
                                         log.warn("Ошибка валидации трека: {}", e.getMessage());
                                         return null;
                                     }
-                                }, virtualExecutorService).exceptionally(ex -> {
-                                    log.warn("Ошибка при валидации: {}", ex.getMessage());
+                                }, virtualExecutorService)
+                                        .exceptionally(ex -> {
+                                    log.warn("Ошибка при валидации: {}", ex.getMessage(), ex);
                                     return null;
                                 })).forEach(featureList::add);
                     }, virtualExecutorService).exceptionally(ex -> {
-                        System.err.println("Ошибка поиска в системе: " + ex.getMessage());
+                        log.warn("Ошибка поиска в системе: " + ex.getMessage());
                         return null;
                     });
             searchFutures.add(searchFuture);
@@ -79,7 +79,7 @@ public class MainSearchService {
         try {
             //Завершение поиска
             CompletableFuture.allOf(searchFutures.toArray(new CompletableFuture[0]))
-                    .get();
+                    .get(15, TimeUnit.SECONDS);
 
             //Таймаут на валидацию
             CompletableFuture.allOf(featureList.toArray(new CompletableFuture[0]))

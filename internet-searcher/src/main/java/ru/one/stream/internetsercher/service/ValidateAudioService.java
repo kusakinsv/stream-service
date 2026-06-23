@@ -1,6 +1,7 @@
 package ru.one.stream.internetsercher.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -10,7 +11,7 @@ import ru.one.stream.internetsercher.models.ValidationResult;
 
 import java.io.IOException;
 import java.util.Set;
-
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class ValidateAudioService {
@@ -31,9 +32,9 @@ public class ValidateAudioService {
 
     public ValidationResult validateUrl(String url) {
         try {
-
+            log.debug("Валидируем {}", url);
             String finalUrl = getFinalUrl(url);
-
+            log.debug("finalUrl: {}", finalUrl);
             HttpGet get = new HttpGet(finalUrl);
             get.setHeader("User-Agent", "Mozilla/5.0");
             get.setHeader("Range", "bytes=0-1023");
