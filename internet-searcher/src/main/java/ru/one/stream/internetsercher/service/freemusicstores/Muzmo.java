@@ -6,7 +6,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.stereotype.Component;
-import ru.one.stream.internetsercher.models.MusicTrack;
+import ru.one.stream.internetsercher.models.SearchedMusicTrack;
 import ru.one.stream.internetsercher.utils.Utils;
 
 import java.util.HashSet;
@@ -25,7 +25,7 @@ public class Muzmo implements MusicResource {
 
     @SneakyThrows
     @Override
-    public Set<MusicTrack> search(String trackName) {
+    public Set<SearchedMusicTrack> search(String trackName) {
         String query = QUERY_URL + Utils.toConvertedStringWithPlus(trackName);
         Document document = Jsoup.connect(query)
                 .followRedirects(true)
@@ -35,13 +35,13 @@ public class Muzmo implements MusicResource {
                 .referrer("http://www.google.com")
                 .get();
 
-        Set<MusicTrack> tracks = new HashSet<>();
+        Set<SearchedMusicTrack> tracks = new HashSet<>();
         Elements elements = document.body().getElementsByAttribute("data-file");
         for (Element elem : elements.asList()) {
             String partUrl = elem.attr("data-file");
             String url = URL + partUrl;
             String finalName = elem.attr("data-title");
-            MusicTrack musicTrackDto = new MusicTrack(finalName, url);
+            SearchedMusicTrack musicTrackDto = new SearchedMusicTrack(finalName, url);
             tracks.add(musicTrackDto);
         }
 

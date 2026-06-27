@@ -1,21 +1,20 @@
 package ru.one.stream.server.entities;
 
+import jakarta.persistence.*;
 import lombok.Data;
-import lombok.Getter;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
-import org.hibernate.search.annotations.Field;
-import org.hibernate.search.annotations.Indexed;
 
-import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
+
+;
 
 @Entity
 @Table(name = "pattern", uniqueConstraints = {
         @UniqueConstraint(columnNames = "title")})
-@Indexed
+
 @Data
 public class Pattern {
 
@@ -24,7 +23,6 @@ public class Pattern {
     @SequenceGenerator(name = "pattern_id_seq",  sequenceName = "pattern_id_seq", initialValue = 50)
     private Long id;
 
-    @Field
     private String title;
 
     @ManyToMany(mappedBy = "patterns", fetch = FetchType.LAZY)

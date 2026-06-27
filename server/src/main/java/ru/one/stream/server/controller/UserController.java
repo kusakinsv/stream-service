@@ -1,4 +1,4 @@
-package ru.one.stream.server.controller.rest;//package ru.one.stream.desktop.controller;
+package ru.one.stream.server.controller;//package ru.one.stream.desktop.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RequestMapping;

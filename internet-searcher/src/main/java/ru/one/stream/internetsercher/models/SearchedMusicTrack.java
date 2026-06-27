@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class MusicTrack {
+public class SearchedMusicTrack {
 
     @NotEmpty
     private String name;
@@ -18,6 +18,6 @@ public class MusicTrack {
     @Override
     public String toString() {
         return String.format(
-                "MusicTrack (name=%s, url=%s)", this.name, this.url);
+                "SearchedMusicTrack (name=%s, url=%s)", this.name, this.url);
     }
 }

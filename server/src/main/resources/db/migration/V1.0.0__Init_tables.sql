@@ -34,7 +34,8 @@ CREATE TABLE IF NOT EXISTS music_track
     track_name VARCHAR(50) NOT NULL,
     duration int8 default NULL,
     url VARCHAR(700) UNIQUE NOT NULL,
-    creation_date VARCHAR(19)
+    is_need_proxy boolean,
+    creation_date date default current_date
 );
 
 ALTER TABLE playlist_position

@@ -1,23 +1,26 @@
 package ru.one.stream.server.service;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ru.one.stream.server.dto.MusicTrackDto;
-import ru.one.stream.server.entities.MusicTrack;
-import ru.one.stream.server.entities.Pattern;
-import ru.one.stream.server.entities.User;
+import ru.one.stream.server.entities.*;
 import ru.one.stream.server.repositories.MusicTrackRepository;
 import ru.one.stream.server.repositories.UserRepository;
 
-@RequiredArgsConstructor
-@Component
-public class PlaylistMusicService {
-    @Autowired
-    UserRepository userRepository;
 
+@Component
+@RequiredArgsConstructor
+public class PlaylistMusicServiceOld {
+    public final UserRepository userRepository;
     private final MusicTrackRepository musicTrackRepository;
 
+
+//    public ItemDto addMusicTrackToUser(MusicTrackDto musicTrackDto, String username) {
+//        User user = userRepository.findUserByUsername(username).get();
+//        Playlist playlist = user.getPlaylist().stream().filter(Playlist::isMain).findFirst().get();
+//
+//        return null;
+//    }
 
     public void addMusicTrackToPlayList(String username, String playListName, MusicTrackDto musicTrackDto) {
         User user = userRepository.findUserByUsername(username).get();

@@ -1,12 +1,12 @@
 package ru.one.stream.server.entities;
 
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import ru.one.stream.server.enums.UserStatus;
 
-import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,7 +32,7 @@ public class User {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
-    private List<Playlist> playlist = new ArrayList<>();
+    private List<Playlist> playlists = new ArrayList<>();
 
     @Column(name = "user_status")
     @Enumerated(EnumType.STRING)

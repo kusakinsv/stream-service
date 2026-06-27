@@ -2,9 +2,8 @@ package ru.one.stream.server;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.context.annotation.*;
-import org.springframework.web.context.WebApplicationContext;
 import ru.one.stream.server.service.SearchService;
-import ru.one.stream.server.service.impl.MusicSearchService;
+import ru.one.stream.server.service.MusicSearchService;
 
 @Configuration
 @ComponentScan("ru.one.stream.server")
@@ -12,13 +11,13 @@ import ru.one.stream.server.service.impl.MusicSearchService;
 public class ServerAppConfiguration {
 
     @Bean
-    ObjectMapper objectMapper(){
+    public ObjectMapper objectMapper(){
         return new ObjectMapper();
     }
 
 
     @Bean
-    SearchService searchService() {
+    public SearchService searchService() {
         return new MusicSearchService();
     }
 }

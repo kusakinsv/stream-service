@@ -6,7 +6,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.stereotype.Component;
-import ru.one.stream.internetsercher.models.MusicTrack;
+import ru.one.stream.internetsercher.models.SearchedMusicTrack;
 import ru.one.stream.internetsercher.utils.Utils;
 
 import java.util.HashSet;
@@ -21,7 +21,7 @@ public class Mp3PartyNet implements MusicResource {
 
     @SneakyThrows
     @Override
-    public Set<MusicTrack> search(String trackName) {
+    public Set<SearchedMusicTrack> search(String trackName) {
         String query = URL + Utils.toConvertedStringWithSpace(trackName);
         Document document = Jsoup.connect(query)
                 .followRedirects(true)
@@ -31,7 +31,7 @@ public class Mp3PartyNet implements MusicResource {
                 .referrer("http://www.google.com")
                 .get();
 
-        Set<MusicTrack> tracks = new HashSet<>();
+        Set<SearchedMusicTrack> tracks = new HashSet<>();
         Elements elements = document.body().getElementsByAttribute("data-js-url");
         for (Element elem : elements.asList()) {
             String url = elem.attr("data-js-url");
@@ -39,7 +39,7 @@ public class Mp3PartyNet implements MusicResource {
             String name = elem.attr("data-js-song-title");
             String finalName = name + " - " + artist;
             if (!url.isEmpty()) {
-                MusicTrack musicTrackDto = new MusicTrack(finalName, url);
+                SearchedMusicTrack musicTrackDto = new SearchedMusicTrack(finalName, url);
                 tracks.add(musicTrackDto);
             }
         }

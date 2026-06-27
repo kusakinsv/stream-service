@@ -6,20 +6,20 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ValidationResult {
-    private String originalUrl;
-    private String finalUrl;
+    private String name;
+    private String url;
     private boolean isValid;
-    private boolean needProxy;
+    private boolean isNeedProxy;
 
-    public ValidationResult(String originalUrl, String finalUrl, boolean isValid, boolean needProxy) {
-        this.originalUrl = originalUrl;
-        this.finalUrl = finalUrl;
+    public ValidationResult(String name, String url, boolean isValid, boolean isNeedProxy) {
+        this.name = name;
+        this.url = url;
         this.isValid = isValid;
-        this.needProxy = needProxy;
+        this.isNeedProxy = isNeedProxy;
     }
 
     public ValidationResult(String originalUrl, boolean isValid) {
-        this.originalUrl = originalUrl;
+        this.url = originalUrl;
         this.isValid = isValid;
     }
 

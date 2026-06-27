@@ -5,9 +5,9 @@ import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import ru.one.stream.internetsercher.models.MusicTrack;
+import ru.one.stream.internetsercher.models.MusicTrackResult;
+import ru.one.stream.internetsercher.models.SearchedMusicTrack;
 import ru.one.stream.internetsercher.models.ValidationResult;
-import ru.one.stream.internetsercher.service.freemusicstores.Mp3PartyNet;
 import ru.one.stream.internetsercher.service.freemusicstores.Muzmo;
 import ru.one.stream.internetsercher.utils.VirtualExecutorService;
 
@@ -16,8 +16,6 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -36,10 +34,11 @@ public class MainSearchService {
     private String proxyServerUrl;
 
     @SneakyThrows
-    public List<MusicTrack> search(String trackName) {
-        Set<CompletableFuture<MusicTrack>> featureList = ConcurrentHashMap.newKeySet();
+    public List<MusicTrackResult> search(String trackName) {
+        Set<CompletableFuture<MusicTrackResult>> featureList = ConcurrentHashMap.newKeySet();
         List<CompletableFuture<Void>> searchFutures = new ArrayList<>();
 
+        //todo удалить передачу name в ValidationResult
         for (SearchEngine system : musicResources) {
             CompletableFuture<Void> searchFuture = CompletableFuture.supplyAsync(() -> system.search(trackName), virtualExecutorService)
                     .thenAcceptAsync(trackList -> {
@@ -48,27 +47,28 @@ public class MainSearchService {
                         }
                         trackList.stream()
                                 .map(track -> CompletableFuture.supplyAsync(() -> {
-                                    try {
-                                        ValidationResult validationResult = validateAudioService.validateUrl(track.getUrl());
-                                        if (validationResult.isValid()) {
-                                            if (validationResult.isNeedProxy()) {
-                                                track.setUrl(createProxyUrl(validationResult.getFinalUrl()));
-                                            } else {
-                                                track.setUrl(validationResult.getFinalUrl());
+                                            try {
+                                                ValidationResult validationResult = validateAudioService.validateTrack(track);
+                                                if (validationResult.isValid()) {
+                                                    MusicTrackResult result = new MusicTrackResult();
+                                                    result.setName(track.getName());
+                                                    result.setUrl(validationResult.getUrl());
+                                                    if (validationResult.isNeedProxy()) {
+                                                        result.setNeedProxy(true);
+                                                    }
+                                                    return result;
+                                                } else {
+                                                    return null;
+                                                }
+                                            } catch (Exception e) {
+                                                log.warn("Ошибка валидации трека: {}", e.getMessage());
+                                                return null;
                                             }
-                                            return track;
-                                        } else {
-                                            return null;
-                                        }
-                                    } catch (Exception e) {
-                                        log.warn("Ошибка валидации трека: {}", e.getMessage());
-                                        return null;
-                                    }
-                                }, virtualExecutorService)
+                                        }, virtualExecutorService)
                                         .exceptionally(ex -> {
-                                    log.warn("Ошибка при валидации: {}", ex.getMessage(), ex);
-                                    return null;
-                                })).forEach(featureList::add);
+                                            log.warn("Ошибка при валидации: {}", ex.getMessage(), ex);
+                                            return null;
+                                        })).forEach(featureList::add);
                     }, virtualExecutorService).exceptionally(ex -> {
                         log.warn("Ошибка поиска в системе: " + ex.getMessage());
                         return null;
@@ -85,7 +85,7 @@ public class MainSearchService {
             CompletableFuture.allOf(featureList.toArray(new CompletableFuture[0]))
                     .get(15, TimeUnit.SECONDS);
 
-            List<MusicTrack> allTracks = featureList.stream()
+            List<MusicTrackResult> allTracks = featureList.stream()
                     .map(CompletableFuture::join)
                     .filter(Objects::nonNull)
                     .toList();
@@ -94,7 +94,7 @@ public class MainSearchService {
             return allTracks;
         } catch (TimeoutException e) {
             log.warn("Превышено время ожидания");
-            List<MusicTrack> partialResults = featureList.stream()
+            List<MusicTrackResult> partialResults = featureList.stream()
                     .filter(CompletableFuture::isDone)
                     .map(CompletableFuture::join)
                     .filter(Objects::nonNull)

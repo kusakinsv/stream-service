@@ -1,12 +1,13 @@
 package ru.one.stream.server.entities;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.*;
 import lombok.Data;
-import org.hibernate.annotations.Generated;
-import org.hibernate.annotations.GenerationTime;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
-import javax.persistence.*;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -16,7 +17,7 @@ import java.util.Set;
 public class Playlist {
 
     @Id
-    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="playlist_id_seq")
+    @GeneratedValue(strategy= GenerationType.SEQUENCE, generator="playlist_id_seq")
     @SequenceGenerator(name = "playlist_id_seq",  sequenceName = "playlist_id_seq", initialValue = 50)
     private Long id;
 
@@ -27,7 +28,8 @@ public class Playlist {
     @JoinColumn(name = "playlist_id", referencedColumnName = "id")
     private Set<PlaylistPosition> playlistPositions = new LinkedHashSet<>();
 
-    private boolean isMain;
+    @Column(name = "is_main")
+    private Boolean isMain;
 
     public Playlist(String title, boolean isMain) {
         this.title = title;

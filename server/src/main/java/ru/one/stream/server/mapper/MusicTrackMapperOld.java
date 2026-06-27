@@ -3,7 +3,7 @@ package ru.one.stream.server.mapper;
 import ru.one.stream.server.dto.MusicTrackDto;
 import ru.one.stream.server.utils.TrackUtils;
 
-public class MusicTrackMapper {
+public class MusicTrackMapperOld {
 
     public MusicTrackDto toMusicTrackDto(String url) {
         MusicTrackDto musicTrackDto = new MusicTrackDto();

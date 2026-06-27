@@ -1,19 +1,17 @@
 package ru.one.stream.server.entities;
 
 
+import jakarta.persistence.*;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
-import org.hibernate.annotations.Generated;
-import org.hibernate.annotations.GenerationTime;
 
-import javax.persistence.*;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashSet;
 import java.util.Set;
+
+;
 
 @Data
 @Entity
@@ -44,7 +42,10 @@ public class MusicTrack {
     )
     private Set<Pattern> patterns = new HashSet<>();
 
-    private LocalDateTime creationDate;
+    @Column(name = "is_need_proxy", unique = true)
+    private Boolean isNeedProxy;
+
+    private LocalDate creationDate;
 
     @Override
     public boolean equals(Object o) {

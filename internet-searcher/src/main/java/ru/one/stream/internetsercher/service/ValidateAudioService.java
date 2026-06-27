@@ -7,6 +7,7 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.util.EntityUtils;
 import org.springframework.stereotype.Service;
+import ru.one.stream.internetsercher.models.SearchedMusicTrack;
 import ru.one.stream.internetsercher.models.ValidationResult;
 
 import java.io.IOException;
@@ -30,10 +31,10 @@ public class ValidateAudioService {
             "audio/aac"
     );
 
-    public ValidationResult validateUrl(String url) {
+    public ValidationResult validateTrack(SearchedMusicTrack track) {
         try {
-            log.debug("Валидируем {}", url);
-            String finalUrl = getFinalUrl(url);
+            log.debug("Валидируем {}", track.getUrl());
+            String finalUrl = getFinalUrl(track.getUrl());
             log.debug("finalUrl: {}", finalUrl);
             HttpGet get = new HttpGet(finalUrl);
             get.setHeader("User-Agent", "Mozilla/5.0");
@@ -44,7 +45,7 @@ public class ValidateAudioService {
                 int statusCode = response.getStatusLine().getStatusCode();
 
                 if (statusCode >= 404) {
-                    return ValidationResult.invalid(url);
+                    return ValidationResult.invalid(track.getUrl());
                 }
 
                 // Получаем заголовки
@@ -52,7 +53,7 @@ public class ValidateAudioService {
                 long contentLength = getContentLength(response);
 
                 if (!isAudio(contentType, contentLength)) {
-                    return ValidationResult.invalid(url);
+                    return ValidationResult.invalid(track.getUrl());
                 }
 
 //                boolean supportsRanges = "bytes".equals(getHeader(response, "Accept-Ranges"));
@@ -72,11 +73,11 @@ public class ValidateAudioService {
                 boolean needProxy = !corsSupported;
 
                 EntityUtils.consume(response.getEntity());
-                return new ValidationResult(url, finalUrl, true, needProxy);
+                return new ValidationResult(track.getName(), finalUrl, true, needProxy);
             }
 
         } catch (Exception e) {
-            return ValidationResult.invalid(url);
+            return ValidationResult.invalid(track.getUrl());
         }
 
     }

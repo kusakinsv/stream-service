@@ -4,7 +4,7 @@ import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import ru.one.stream.server.repositories.MusicTrackRepository;
-import ru.one.stream.server.service.MusicTrackService;
+import ru.one.stream.server.service.MusicTrackServiceOld;
 
 @SpringBootTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -14,7 +14,7 @@ public class MusicCreationTest {
     MusicTrackRepository musicTrackRepository;
 
     @Autowired
-    MusicTrackService serverMusicService;
+    MusicTrackServiceOld serverMusicService;
 
 //    @Test
     public void testDelete(){
