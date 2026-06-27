@@ -14,9 +14,8 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDate;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -56,14 +55,14 @@ public class MusicTrackServiceOld {
     }
 
     public MusicTrackDto addMusicTrackToPlayList(MusicTrackDto musicTrackDto, Long playListId) {
-        MusicTrack musicTrack = this.addMusicTrack(musicTrackDto.getUrl(), musicTrackDto.getName());
+        MusicTrack musicTrack = this.addMusicTrack(musicTrackDto.getUrl(), musicTrackDto.getTitle());
         Playlist playlist = playlistRepository.getById(playListId);
         Set<PlaylistPosition> positions = playlist.getPlaylistPositions();
         int lastPosition = positions.size();
         PlaylistPosition newPlaylistPosition = new PlaylistPosition();
         newPlaylistPosition.setPosition(lastPosition + 1);
         newPlaylistPosition.setMusicTrack(musicTrack);
-        newPlaylistPosition.setTitle(musicTrackDto.getName());
+        newPlaylistPosition.setTitle(musicTrackDto.getTitle());
         positions.add(newPlaylistPosition);
         playlistRepository.save(playlist);
         musicTrackDto.setId(musicTrack.getId());
@@ -95,7 +94,9 @@ public class MusicTrackServiceOld {
         reOrderPositions(playlistPositions);
     }
 
-    private List<PlaylistPosition> reOrderPositions(List<PlaylistPosition> positions) {
+    private List<PlaylistPosition> reOrderPositions(Collection<PlaylistPosition> unordered) {
+        List<PlaylistPosition> positions = unordered.stream()
+                .sorted(Comparator.comparing(PlaylistPosition::getPosition)).toList();
         for (int i = 0; i < positions.size(); i++) {
             positions.get(i).setPosition(i + 1);
         }

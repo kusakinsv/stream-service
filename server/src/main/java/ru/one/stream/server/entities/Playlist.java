@@ -23,7 +23,7 @@ public class Playlist {
 
     private String title;
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "playlist_id", referencedColumnName = "id")
     private Set<PlaylistPosition> playlistPositions = new LinkedHashSet<>();

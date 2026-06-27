@@ -18,17 +18,13 @@ public class MusicTrackService {
     private final MusicTrackRepository musicTrackRepository;
     private final PatternRepository patternRepository;
 
-   public MusicTrackDto addMusicTrackToLibrary(String username, MusicTrackDto musicTrackDto) {
-
-   }
-
     /**
      * Добавляет трек в общую Базу треков
      */
     public MusicTrack addMusicTrack(MusicTrackDto musicTrackDto) {
-        String patternTitle = musicTrackDto.getName();
+        String patternTitle = musicTrackDto.getTitle();
         Optional<MusicTrack> optionalMusicTrack = musicTrackRepository.findByUrl(musicTrackDto.getUrl());
-        Optional<Pattern> foundedPattern = patternRepository.findByTitleLike(musicTrackDto.getName().toLowerCase());
+        Optional<Pattern> foundedPattern = patternRepository.findByTitleLike(musicTrackDto.getTitle().toLowerCase());
         if (optionalMusicTrack.isPresent()) {
             MusicTrack foundedTrack = optionalMusicTrack.get();
             if (foundedTrack.getDuration() == null && musicTrackDto.getDuration() != null) {
@@ -37,12 +33,12 @@ public class MusicTrackService {
             if (foundedPattern.isPresent()) {
                 foundedTrack.getPatterns().add(foundedPattern.get());
             } else {
-                foundedTrack.getPatterns().add(new Pattern(musicTrackDto.getName()));
+                foundedTrack.getPatterns().add(new Pattern(musicTrackDto.getTitle()));
             }
             return musicTrackRepository.save(foundedTrack);
         } else {
             MusicTrack newTrack = new MusicTrack();
-            newTrack.setTrackName(musicTrackDto.getName());
+            newTrack.setTrackName(musicTrackDto.getTitle());
             newTrack.setUrl(musicTrackDto.getUrl());
             newTrack.setIsNeedProxy(musicTrackDto.getIsNeedProxy());
             newTrack.setDuration(musicTrackDto.getDuration());

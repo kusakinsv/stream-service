@@ -7,14 +7,14 @@ public class MusicTrackMapperOld {
 
     public MusicTrackDto toMusicTrackDto(String url) {
         MusicTrackDto musicTrackDto = new MusicTrackDto();
-        musicTrackDto.setName(TrackUtils.constructNameFromLink(url));
+        musicTrackDto.setTitle(TrackUtils.constructNameFromLink(url));
         musicTrackDto.setUrl(url);
         return musicTrackDto;
     }
 
     public MusicTrackDto createMusicTrackDto(String name, String url) {
         MusicTrackDto musicTrackDto = new MusicTrackDto();
-        musicTrackDto.setName(name);
+        musicTrackDto.setTitle(name);
         musicTrackDto.setUrl(url);
         return musicTrackDto;
     }

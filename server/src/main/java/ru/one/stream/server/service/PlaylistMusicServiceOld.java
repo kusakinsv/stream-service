@@ -40,10 +40,10 @@ public class PlaylistMusicServiceOld {
         var trackFromRepo = musicTrackRepository.findByUrl(musicTrackDto.getUrl());
         if (trackFromRepo.isEmpty()) {
             MusicTrack musicTrack = new MusicTrack();
-            musicTrack.setTrackName(musicTrackDto.getName());
+            musicTrack.setTrackName(musicTrackDto.getTitle());
             musicTrack.setUrl(musicTrackDto.getUrl());
             Pattern pattern = new Pattern();
-            pattern.setTitle(musicTrackDto.getName());
+            pattern.setTitle(musicTrackDto.getTitle());
             pattern.getTracks().add(musicTrack);
             musicTrack.getPatterns().add(pattern);
             MusicTrack result = musicTrackRepository.save(musicTrack);
