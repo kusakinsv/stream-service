@@ -73,7 +73,7 @@ public class ValidateAudioService {
                 boolean needProxy = !corsSupported;
 
                 EntityUtils.consume(response.getEntity());
-                return new ValidationResult(track.getName(), finalUrl, true, needProxy);
+                return new ValidationResult(track.getTitle(), finalUrl, true, needProxy);
             }
 
         } catch (Exception e) {

@@ -25,10 +25,10 @@ public class MusicTrack {
     private Long id;
 
     @Column(name = "track_name")
-    private String trackName;
+    private String title;
 
     @Column(name = "duration")
-    private Long duration;
+    private Double duration;
 
     @Column(name = "url", unique = true)
     private String url;
@@ -63,7 +63,7 @@ public class MusicTrack {
     @Override
     public String toString() {
         return String.format(
-                "MusicTrack (id=%s, trackName=%s, url=%s)", this.id, this.trackName, this.url);
+                "MusicTrack (id=%s, trackName=%s, url=%s)", this.id, this.title, this.url);
     }
 
     public MusicTrack() {

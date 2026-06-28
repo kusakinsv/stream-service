@@ -9,7 +9,7 @@ public class MusicTrackDto {
 
     private Long id;
     private String title;
-    private Long duration;
+    private Double duration;
     private String url;
     private Boolean isNeedProxy;
 

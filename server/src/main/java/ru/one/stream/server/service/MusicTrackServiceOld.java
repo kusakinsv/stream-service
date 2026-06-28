@@ -15,7 +15,6 @@ import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDate;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -42,7 +41,7 @@ public class MusicTrackServiceOld {
             return musicTrackRepository.save(foundedTrack);
         } else {
             MusicTrack newTrack = new MusicTrack();
-            newTrack.setTrackName(patternTitle);
+            newTrack.setTitle(patternTitle);
             newTrack.setUrl(url);
             newTrack.setCreationDate(LocalDate.now());
             if (foundedPattern.isPresent()) {

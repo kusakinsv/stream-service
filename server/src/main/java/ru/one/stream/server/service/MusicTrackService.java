@@ -38,7 +38,7 @@ public class MusicTrackService {
             return musicTrackRepository.save(foundedTrack);
         } else {
             MusicTrack newTrack = new MusicTrack();
-            newTrack.setTrackName(musicTrackDto.getTitle());
+            newTrack.setTitle(musicTrackDto.getTitle());
             newTrack.setUrl(musicTrackDto.getUrl());
             newTrack.setIsNeedProxy(musicTrackDto.getIsNeedProxy());
             newTrack.setDuration(musicTrackDto.getDuration());

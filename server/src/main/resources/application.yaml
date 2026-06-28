@@ -18,7 +18,6 @@ spring:
   flyway:
     schemas: public
     enabled: true
-  mvc:
-    view:
-      prefix: classpath:templates/
-      suffix: .html
+  threads:
+    virtual:
+      enabled: true

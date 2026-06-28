@@ -54,7 +54,7 @@ public class PlaylistService {
         }
     }
 
-    private int findLastPosition(Set<PlaylistPosition> positions) {
+    private int findLastPosition(Collection<PlaylistPosition> positions) {
         return positions.stream().max(Comparator.comparing(PlaylistPosition::getPosition))
                 .map(PlaylistPosition::getPosition)
                 .orElse(0);
@@ -78,7 +78,6 @@ public class PlaylistService {
         } else {
             return playlistMapper.toDto(playlist);
         }
-
     }
 
     @Transactional

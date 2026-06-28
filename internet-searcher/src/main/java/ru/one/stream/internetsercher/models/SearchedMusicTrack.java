@@ -11,13 +11,13 @@ import lombok.NoArgsConstructor;
 public class SearchedMusicTrack {
 
     @NotEmpty
-    private String name;
+    private String title;
     @NotEmpty
     private String url;
 
     @Override
     public String toString() {
         return String.format(
-                "SearchedMusicTrack (name=%s, url=%s)", this.name, this.url);
+                "SearchedMusicTrack (name=%s, url=%s)", this.title, this.url);
     }
 }

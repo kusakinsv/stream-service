@@ -17,7 +17,7 @@ public class ItemDto {
 
     private String url;
 
-    private String duration;
+    private Double duration;
 
     private Boolean isNeedProxy;
 

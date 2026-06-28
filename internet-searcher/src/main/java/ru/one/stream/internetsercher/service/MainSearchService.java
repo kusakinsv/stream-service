@@ -6,7 +6,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import ru.one.stream.internetsercher.models.MusicTrackResult;
-import ru.one.stream.internetsercher.models.SearchedMusicTrack;
 import ru.one.stream.internetsercher.models.ValidationResult;
 import ru.one.stream.internetsercher.service.freemusicstores.Muzmo;
 import ru.one.stream.internetsercher.utils.VirtualExecutorService;
@@ -51,7 +50,7 @@ public class MainSearchService {
                                                 ValidationResult validationResult = validateAudioService.validateTrack(track);
                                                 if (validationResult.isValid()) {
                                                     MusicTrackResult result = new MusicTrackResult();
-                                                    result.setName(track.getName());
+                                                    result.setTitle(track.getTitle());
                                                     result.setUrl(validationResult.getUrl());
                                                     if (validationResult.isNeedProxy()) {
                                                         result.setNeedProxy(true);
@@ -79,7 +78,7 @@ public class MainSearchService {
         try {
             //Завершение поиска
             CompletableFuture.allOf(searchFutures.toArray(new CompletableFuture[0]))
-                    .get(15, TimeUnit.SECONDS);
+                    .get(20, TimeUnit.SECONDS);
 
             //Таймаут на валидацию
             CompletableFuture.allOf(featureList.toArray(new CompletableFuture[0]))
