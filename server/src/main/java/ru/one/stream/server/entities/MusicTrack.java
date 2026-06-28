@@ -24,7 +24,7 @@ public class MusicTrack {
     @SequenceGenerator(name = "music_track_id_seq",  sequenceName = "music_track_id_seq", initialValue = 50)
     private Long id;
 
-    @Column(name = "track_name")
+    @Column(name = "title")
     private String title;
 
     @Column(name = "duration")

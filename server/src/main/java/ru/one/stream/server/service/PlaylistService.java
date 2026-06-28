@@ -3,6 +3,7 @@ package ru.one.stream.server.service;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import ru.one.stream.server.dto.ItemDto;
 import ru.one.stream.server.dto.MusicTrackDto;
 import ru.one.stream.server.dto.PlaylistDto;
 import ru.one.stream.server.entities.MusicTrack;
@@ -58,6 +59,27 @@ public class PlaylistService {
         return positions.stream().max(Comparator.comparing(PlaylistPosition::getPosition))
                 .map(PlaylistPosition::getPosition)
                 .orElse(0);
+    }
+
+    @Transactional
+    public PlaylistDto deletePosition(String username, ItemDto musicTrackDto) {
+
+        Playlist playlist = userRepository.findUserByUsername(username).get()
+                .getPlaylists().stream().filter(Playlist::getIsMain)
+                .findFirst().orElseThrow();
+
+        Set<PlaylistPosition> positions = playlist.getPlaylistPositions();
+        //убедимся что трек не повторяется
+        Optional<PlaylistPosition> optional = positions.stream()
+                .filter(x -> x.getMusicTrack().getUrl().equals(musicTrackDto.getUrl())).findFirst();
+        if (optional.isPresent()) {
+            PlaylistPosition position = optional.get();
+            positions.remove(position);
+            reOrderPositions(positions);
+            return playlistMapper.toDto(playlistRepository.save(playlist));
+        } else {
+            return playlistMapper.toDto(playlist);
+        }
     }
 
     @Transactional

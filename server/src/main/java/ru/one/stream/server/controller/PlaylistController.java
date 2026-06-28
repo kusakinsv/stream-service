@@ -3,6 +3,7 @@ package ru.one.stream.server.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.one.stream.server.dto.ItemDto;
 import ru.one.stream.server.dto.MusicTrackDto;
 import ru.one.stream.server.dto.PlaylistDto;
 import ru.one.stream.server.service.PlaylistService;
@@ -28,9 +29,12 @@ public class PlaylistController {
         return ResponseEntity.ok(library);
     }
 
-    @DeleteMapping("/{position}")
-    public ResponseEntity<PlaylistDto> addTrackToLibrary(@PathVariable Integer position) {
-        var library = playlistService.deletePosition(USERNAME, position);
+    @DeleteMapping
+    public ResponseEntity<PlaylistDto> deletePosition(@RequestBody ItemDto musicTrackDto) {
+        System.out.println(musicTrackDto);
+        var library = playlistService.deletePosition(USERNAME, musicTrackDto);
         return ResponseEntity.ok(library);
     }
+
+
 }
